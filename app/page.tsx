@@ -347,7 +347,7 @@ export default function HomePage() {
           </section>
         </div>
 
-        {/* CHAPTER 04: Letters for this chapter */}
+        {/* CHAPTER 04: Wishes for this chapter */}
         <section id="chapter-04" className="space-y-10 max-w-4xl mx-auto pt-8 scroll-mt-24">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-hairline pb-4">
             <div className="space-y-2">
@@ -355,7 +355,7 @@ export default function HomePage() {
                 chapter 04
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl text-ink font-normal">
-                letters for this chapter
+                wishes for this chapter
               </h2>
             </div>
 
