@@ -16,13 +16,13 @@ export async function generateMetadata({
 
   if (!wish) {
     return {
-      title: "Letter Not Found · samkiel turns 20",
-      description: "This birthday letter could not be found.",
+      title: "letter not found · samkiel turns 20",
+      description: "this birthday letter could not be found.",
     };
   }
 
-  const title = `Letter from ${wish.name} · samkiel turns 20`;
-  const description = `"${wish.message}" — Birthday letter for samkiel at 20.`;
+  const title = `letter from ${wish.name} · samkiel turns 20`;
+  const description = `"${wish.message}" — birthday letter for samkiel at 20.`;
   const url = `https://birthday.samkiel.dev/wish/${wish.code}`;
   const image = "https://birthday.samkiel.dev/pictures/samkielbday01.jpg";
 
@@ -40,7 +40,7 @@ export async function generateMetadata({
           url: image,
           width: 1200,
           height: 1500,
-          alt: "samkiel - Chapter 20 portrait",
+          alt: "samkiel - chapter 20 portrait",
         },
       ],
     },
@@ -62,13 +62,13 @@ export default async function WishPage({ params }: PageProps) {
       <div className="max-w-md mx-auto px-4 py-20 text-center space-y-6">
         <div className="space-y-2">
           <span className="text-xs font-mono uppercase tracking-widest text-muted">
-            404 · Not Found
+            404 · not found
           </span>
           <h1 className="font-serif text-3xl font-medium text-ink">
-            Letter not found
+            letter not found
           </h1>
           <p className="text-muted text-sm leading-relaxed">
-            We couldn&apos;t find a letter at <span className="font-mono text-ink">/wish/{code}</span>. It may have been moved or removed.
+            couldn&apos;t find a letter at <span className="font-mono text-ink">/wish/{code}</span>. it might have been moved or removed.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default async function WishPage({ params }: PageProps) {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-colors shadow-xs"
           >
             <PenLine className="w-3.5 h-3.5" />
-            <span>Write a letter</span>
+            <span>write a letter</span>
           </Link>
 
           <Link
@@ -86,7 +86,7 @@ export default async function WishPage({ params }: PageProps) {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-hairline text-muted hover:text-ink text-xs font-mono uppercase tracking-wider transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back home</span>
+            <span>back home</span>
           </Link>
         </div>
       </div>
