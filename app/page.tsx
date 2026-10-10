@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChapterNav } from "@/components/chapter-nav";
 import { WishSection } from "@/components/wish-section";
 import { triggerConfetti } from "@/lib/confetti";
-import { ArrowDown, ExternalLink, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight, ExternalLink, Sparkles } from "lucide-react";
 
 export default function HomePage() {
   const handleBegin = () => {
@@ -64,12 +64,14 @@ export default function HomePage() {
                   <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-y-0.5" />
                 </button>
 
-                <a
-                  href="#chapter-02"
-                  className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-mono uppercase tracking-wider text-muted hover:text-ink transition-colors"
+                <Link
+                  href="/wishes"
+                  data-track="send-letter-hero"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg border border-hairline text-xs sm:text-sm font-medium text-ink hover:text-accent hover:border-accent/40 bg-paper/60 backdrop-blur-xs transition-all group"
                 >
-                  <span>Scroll to begin ↓</span>
-                </a>
+                  <span>Send a Letter</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 text-muted group-hover:text-accent" />
+                </Link>
               </div>
             </div>
 
