@@ -8,14 +8,17 @@ import { RELATIONSHIP_OPTIONS, WishResponse } from "@/types/wishes";
 import {
   ArrowLeft,
   PenLine,
-  FileDown,
   Sparkles,
   Send,
   Loader2,
   X,
   LayoutGrid,
   Waves,
+  Check,
+  Download,
+  Share2,
 } from "lucide-react";
+import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generator";
 
 export default function WishesPage() {
   const [wishes, setWishes] = useState<WishResponse[]>([]);
@@ -28,8 +31,10 @@ export default function WishesPage() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [relationship, setRelationship] = useState("");
+  const [customRelationship, setCustomRelationship] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [sentSuccess, setSentSuccess] = useState(false);
 
   const maxMessageLen = 280;
 
@@ -65,13 +70,20 @@ export default function WishesPage() {
 
     setSubmitting(true);
     try {
+      const finalRelationship =
+        relationship === "Other"
+          ? customRelationship.trim()
+            ? `Other: ${customRelationship.trim()}`
+            : "Other"
+          : relationship;
+
       const res = await fetch("/api/wishes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
           message: message.trim(),
-          relationship: relationship || undefined,
+          relationship: finalRelationship || undefined,
           honeypot,
         }),
       });
@@ -90,13 +102,12 @@ export default function WishesPage() {
       setName("");
       setMessage("");
       setRelationship("");
+      setCustomRelationship("");
       setHoneypot("");
+      setSentSuccess(true);
 
       // Add to state
       setWishes((prev) => [data, ...prev]);
-
-      // Scroll smoothly to top
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
       toast.error("Failed to connect. Please try again.");
     } finally {
@@ -107,7 +118,17 @@ export default function WishesPage() {
   const filteredWishes =
     activeFilter === "All"
       ? wishes
-      : wishes.filter((w) => w.relationship === activeFilter);
+      : wishes.filter((w) => {
+          if (!w.relationship) return false;
+          if (activeFilter === "Other") {
+            return (
+              w.relationship === "Other" ||
+              w.relationship.startsWith("Other:") ||
+              w.relationship.startsWith("Other (")
+            );
+          }
+          return w.relationship === activeFilter;
+        });
 
   return (
     <div className="min-h-screen pb-24">
@@ -123,14 +144,6 @@ export default function WishesPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <a
-              href="/api/wishes/pdf"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-hairline text-xs font-mono text-muted hover:text-ink hover:border-ink transition-colors"
-            >
-              <FileDown className="w-3.5 h-3.5" />
-              <span>Download PDF</span>
-            </a>
-
             <a
               href="#write"
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-colors shadow-2xs"
@@ -251,7 +264,7 @@ export default function WishesPage() {
                   <div className="w-2.5 h-2.5 rounded-full border border-hairline bg-accent/30 mx-auto -mt-2 mb-4 group-hover:bg-accent transition-colors" />
 
                   <p className="text-ink text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-6 font-serif">
-                    "{w.message}"
+                    &ldquo;{w.message}&rdquo;
                   </p>
 
                   <div className="mt-5 pt-4 border-t border-hairline/60 flex items-center justify-between text-xs font-mono text-muted">
@@ -265,12 +278,36 @@ export default function WishesPage() {
                         </span>
                       )}
                     </div>
-                    <time dateTime={w.createdAt}>
-                      {new Date(w.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </time>
+                    <div className="flex items-center gap-2">
+                      <time dateTime={w.createdAt}>
+                        {new Date(w.createdAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </time>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          downloadLetterAsPng(w);
+                        }}
+                        title="Download letter as PNG"
+                        className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          shareLetterAsPng(w);
+                        }}
+                        title="Share letter"
+                        className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                      >
+                        <Share2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </article>
               );
@@ -286,7 +323,7 @@ export default function WishesPage() {
                 className="p-5 rounded-xl border border-hairline bg-paper/70 hover:border-accent transition-all cursor-pointer flex flex-col justify-between gap-4"
               >
                 <p className="text-ink text-sm leading-relaxed whitespace-pre-wrap font-serif">
-                  "{w.message}"
+                  &ldquo;{w.message}&rdquo;
                 </p>
 
                 <div className="pt-3 border-t border-hairline/60 flex items-center justify-between text-xs font-mono text-muted">
@@ -300,12 +337,36 @@ export default function WishesPage() {
                       </span>
                     )}
                   </div>
-                  <time dateTime={w.createdAt}>
-                    {new Date(w.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </time>
+                  <div className="flex items-center gap-2">
+                    <time dateTime={w.createdAt}>
+                      {new Date(w.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </time>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        downloadLetterAsPng(w);
+                      }}
+                      title="Download letter as PNG"
+                      className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        shareLetterAsPng(w);
+                      }}
+                      title="Share letter"
+                      className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                    >
+                      <Share2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </article>
             ))}
@@ -331,10 +392,37 @@ export default function WishesPage() {
           </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="p-6 sm:p-8 rounded-2xl border border-hairline bg-paper/80 shadow-xs space-y-6"
-        >
+        {sentSuccess ? (
+          <div className="p-8 sm:p-12 rounded-2xl border border-hairline bg-paper/80 shadow-xs text-center space-y-6 animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-14 h-14 rounded-full bg-accent-soft border border-accent/20 text-accent flex items-center justify-center mx-auto shadow-xs">
+              <Check className="w-7 h-7" />
+            </div>
+
+            <div className="space-y-2 max-w-md mx-auto">
+              <h3 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
+                Letter placed on the wall
+              </h3>
+              <p className="text-muted text-sm leading-relaxed">
+                Thank you for contributing to Chapter 20. Your note is now preserved on the wall.
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setSentSuccess(false)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-xs"
+              >
+                <PenLine className="w-3.5 h-3.5 text-accent" />
+                <span>Send another letter</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            className="p-6 sm:p-8 rounded-2xl border border-hairline bg-paper/80 shadow-xs space-y-6"
+          >
           {/* Honeypot field */}
           <div className="hidden" aria-hidden="true">
             <label htmlFor="hp-website">Website</label>
@@ -377,7 +465,12 @@ export default function WishesPage() {
               <select
                 id="author-relationship"
                 value={relationship}
-                onChange={(e) => setRelationship(e.target.value)}
+                onChange={(e) => {
+                  setRelationship(e.target.value);
+                  if (e.target.value !== "Other") {
+                    setCustomRelationship("");
+                  }
+                }}
                 className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
               >
                 <option value="">Select how you know me</option>
@@ -387,6 +480,20 @@ export default function WishesPage() {
                   </option>
                 ))}
               </select>
+
+              {relationship === "Other" && (
+                <div className="pt-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                  <input
+                    type="text"
+                    maxLength={50}
+                    placeholder="Please specify (e.g. Mentor, Secondary school, Church)..."
+                    value={customRelationship}
+                    onChange={(e) => setCustomRelationship(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                    aria-label="Specify other relationship"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
@@ -436,6 +543,7 @@ export default function WishesPage() {
             )}
           </button>
         </form>
+        )}
       </section>
 
       {/* Expanded Letter Reader Modal */}
@@ -469,18 +577,42 @@ export default function WishesPage() {
             </div>
 
             <p className="font-serif text-base sm:text-lg text-ink/90 leading-relaxed whitespace-pre-wrap italic">
-              "{selectedWish.message}"
+              &ldquo;{selectedWish.message}&rdquo;
             </p>
 
-            <div className="pt-4 border-t border-hairline flex items-center justify-between text-xs font-mono text-muted">
-              <span>Letter for Chapter 20</span>
-              <time dateTime={selectedWish.createdAt}>
-                {new Date(selectedWish.createdAt).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </time>
+            <div className="pt-4 border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+              <div className="text-muted">
+                <span>Letter for Chapter 20 · </span>
+                <time dateTime={selectedWish.createdAt}>
+                  {new Date(selectedWish.createdAt).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </time>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => downloadLetterAsPng(selectedWish)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-2xs"
+                  title="Download letter as PNG"
+                >
+                  <Download className="w-3.5 h-3.5 text-accent" />
+                  <span>Download PNG</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => shareLetterAsPng(selectedWish)}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-all cursor-pointer shadow-2xs"
+                  title="Share letter image"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  <span>Share</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
