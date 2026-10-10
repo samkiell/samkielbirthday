@@ -255,7 +255,7 @@ export default function HomePage() {
                   leading before i knew i could
                 </h3>
                 <p className="text-sm leading-relaxed text-ink/90">
-                  in my first year on campus i started leading dev++, a developer
+                  in my first year on campus i started leading d3v++, a developer
                   community. i had no idea i could lead until i tried. i just love
                   watching people learn and grow. biggest lesson: not everyone will
                   be active or cooperative, and you can't force them. bring
