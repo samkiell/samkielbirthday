@@ -8,7 +8,6 @@ import {
   ArrowLeft,
   Download,
   Share2,
-  MessageCircle,
   LayoutGrid,
   Square,
   X,
@@ -34,7 +33,6 @@ export default function PicturesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "large">("grid");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [sharingId, setSharingId] = useState<string | null>(null);
-  const [whatsappSharingId, setWhatsappSharingId] = useState<string | null>(null);
 
   const activePhoto =
     lightboxIndex !== null ? pictures[lightboxIndex] : null;
@@ -139,90 +137,6 @@ export default function PicturesPage() {
       toast.error("could not share picture");
     } finally {
       setSharingId(null);
-    }
-  };
-
-  const handleWhatsAppShare = async (pic: PictureItem) => {
-    if (whatsappSharingId) return;
-    setWhatsappSharingId(pic.id);
-
-    const picUrl = `${window.location.origin}/pictures/${pic.id}`;
-    const cleanTitle = pic.title.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
-    const shareImgSrc = `/share-images/${pic.id}.jpg`;
-
-    try {
-      const res = await fetch(shareImgSrc);
-      let file: File | null = null;
-      let blob: Blob | null = null;
-      if (res.ok) {
-        blob = await res.blob();
-        file = new File([blob], `samkiel-${cleanTitle}.jpg`, { type: "image/jpeg" });
-      }
-
-      // 1. Mobile / Web Share: attach real image file directly
-      if (file && typeof navigator !== "undefined" && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: `samkiel turns 20 · ${pic.title}`,
-            text: `celebrating samkiel's 20th birthday: two decades in. still dey on motion.\n${picUrl}`,
-          });
-          return;
-        } catch (shareErr: unknown) {
-          if ((shareErr as { name?: string })?.name === "AbortError") {
-            return;
-          }
-        }
-      }
-
-      // 2. Desktop fallback: copy photo to clipboard so Ctrl+V pastes image in WhatsApp
-      if (blob && typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.write) {
-        try {
-          const img = document.createElement("img");
-          img.crossOrigin = "anonymous";
-          img.src = URL.createObjectURL(blob);
-          await new Promise((resolve) => {
-            img.onload = resolve;
-            img.onerror = resolve;
-          });
-          const canvas = document.createElement("canvas");
-          canvas.width = img.naturalWidth || 1200;
-          canvas.height = img.naturalHeight || 1200;
-          const ctx = canvas.getContext("2d");
-          if (ctx) {
-            ctx.drawImage(img, 0, 0);
-            await new Promise<void>((resolve) => {
-              canvas.toBlob(async (pngBlob) => {
-                if (pngBlob) {
-                  try {
-                    await navigator.clipboard.write([
-                      new ClipboardItem({ "image/png": pngBlob }),
-                    ]);
-                    toast.success("Photo copied to clipboard! Paste (Ctrl+V) directly in WhatsApp", {
-                      duration: 6000,
-                    });
-                  } catch {
-                    // Clipboard write failed
-                  }
-                }
-                resolve();
-              }, "image/png");
-            });
-          }
-        } catch {
-          // Ignore canvas error
-        }
-      }
-
-      // Open WhatsApp with direct picture link that has WhatsApp rich photo preview
-      const text = encodeURIComponent(
-        `celebrating samkiel's 20th birthday! check out this photo: ${picUrl}`
-      );
-      window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
-    } catch {
-      toast.error("could not open whatsapp");
-    } finally {
-      setWhatsappSharingId(null);
     }
   };
 
@@ -414,21 +328,6 @@ export default function PicturesPage() {
                         )}
                         <span>{sharingId === pic.id ? "attaching..." : "share"}</span>
                       </button>
-
-                      <button
-                        type="button"
-                        data-track="picture_whatsapp"
-                        disabled={whatsappSharingId === pic.id}
-                        onClick={() => handleWhatsAppShare(pic)}
-                        className="inline-flex items-center gap-1 text-xs font-mono text-muted hover:text-[#25D366] transition-colors cursor-pointer disabled:opacity-50"
-                      >
-                        {whatsappSharingId === pic.id ? (
-                          <Loader2 className="w-3.5 h-3.5 animate-spin text-[#25D366]" />
-                        ) : (
-                          <MessageCircle className="w-3.5 h-3.5" />
-                        )}
-                        <span>{whatsappSharingId === pic.id ? "attaching..." : "whatsapp"}</span>
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -561,21 +460,6 @@ export default function PicturesPage() {
                 <Share2 className="w-3.5 h-3.5" />
               )}
               <span>{sharingId === activePhoto.id ? "attaching..." : "share"}</span>
-            </button>
-
-            <button
-              type="button"
-              data-track="picture_whatsapp"
-              disabled={whatsappSharingId === activePhoto.id}
-              onClick={() => handleWhatsAppShare(activePhoto)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#4ADE80] transition-colors cursor-pointer disabled:opacity-50"
-            >
-              {whatsappSharingId === activePhoto.id ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#4ADE80]" />
-              ) : (
-                <MessageCircle className="w-3.5 h-3.5" />
-              )}
-              <span>{whatsappSharingId === activePhoto.id ? "attaching..." : "whatsapp"}</span>
             </button>
 
             <button
