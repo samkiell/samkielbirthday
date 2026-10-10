@@ -38,7 +38,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
-      toast.success("letter link copied to clipboard");
+      toast.success("wish link copied to clipboard");
       setTimeout(() => setCopied(false), 2500);
     } catch {
       toast.error("could not copy link");
@@ -48,7 +48,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
   const handleWhatsAppShare = () => {
     const url = getShareUrl();
     const text = encodeURIComponent(
-      `read this letter from ${wish.name} for samkiel at 20: "${wish.message}"\n\n${url}`
+      `read this birthday wish from ${wish.name} for samkiel at 20: "${wish.message}"\n\n${url}`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
   };
@@ -68,7 +68,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
           className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted hover:text-ink transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>all letters</span>
+          <span>all wishes</span>
         </Link>
 
         <span className="text-[11px] font-mono tracking-wider text-muted">
@@ -76,15 +76,15 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
         </span>
       </div>
 
-      {/* Main Letter Card */}
+      {/* Main Wish Card */}
       <article className="relative p-7 sm:p-10 rounded-2xl border border-hairline bg-paper/85 backdrop-blur-xs shadow-lg space-y-8">
         {/* Card Header */}
         <div className="flex flex-wrap items-start justify-between gap-4 border-b border-hairline/80 pb-6">
           <div className="space-y-1">
             <span className="text-[10px] font-mono tracking-widest uppercase text-accent font-semibold">
-              chapter 20 · personal letter
+              chapter 20 · birthday wish
             </span>
-            <h1 className="font-serif text-2xl sm:text-3xl font-medium text-ink">
+            <h1 className="font-editorial text-2xl sm:text-3xl font-medium text-ink">
               {wish.name}
             </h1>
           </div>
@@ -104,11 +104,72 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
           </div>
         </div>
 
-        {/* Letter Body */}
-        <div className="py-2">
-          <p className="font-serif text-lg sm:text-2xl text-ink leading-relaxed italic whitespace-pre-wrap">
+        {/* Wish Body with Editorial Typography */}
+        <div className="py-2 space-y-4">
+          <p className="font-editorial text-xl sm:text-3xl text-ink leading-relaxed italic whitespace-pre-wrap">
             &ldquo;{wish.message}&rdquo;
           </p>
+
+          {/* Dropped Fountain Pen Design ("pen dropped, as per done writing") */}
+          <div
+            className="flex items-center justify-end pt-3 pb-1 pr-2 opacity-80 select-none"
+            aria-hidden="true"
+          >
+            <svg
+              width="140"
+              height="26"
+              viewBox="0 0 140 26"
+              fill="none"
+              className="rotate-[-5deg] drop-shadow-xs"
+            >
+              {/* Soft ground shadow */}
+              <ellipse
+                cx="66"
+                cy="21"
+                rx="62"
+                ry="3"
+                fill="currentColor"
+                className="text-black/15 dark:text-black/40 blur-[2px]"
+              />
+              {/* Pen finial */}
+              <rect x="5" y="8.5" width="3.5" height="9" rx="1.5" fill="#C8A14E" />
+              {/* Pen barrel */}
+              <rect
+                x="8.5"
+                y="7.5"
+                width="72"
+                height="11"
+                rx="3"
+                className="fill-[#1A3024] dark:fill-[#223B2D]"
+              />
+              {/* Center gold band */}
+              <rect x="80.5" y="7" width="4" height="12" fill="#E0BF62" />
+              {/* Contoured grip section */}
+              <path
+                d="M84.5 8 L102 9.5 L102 16.5 L84.5 18 Z"
+                className="fill-[#2B2926] dark:fill-[#1C1A17]"
+              />
+              {/* Nib collar */}
+              <rect x="102" y="9" width="2.5" height="8" fill="#E0BF62" />
+              {/* Spade fountain nib */}
+              <path
+                d="M104.5 9 Q111.5 7.5 116 9.5 L127 13 L116 16.5 Q111.5 18.5 104.5 17 Z"
+                fill="#DFC26C"
+              />
+              {/* Slit & breather hole */}
+              <line
+                x1="112"
+                y1="13"
+                x2="127"
+                y2="13"
+                stroke="#1B1711"
+                strokeWidth="0.8"
+              />
+              <circle cx="112" cy="13" r="1.1" fill="#1B1711" />
+              {/* Fresh ink drop at nib point */}
+              <circle cx="131" cy="14" r="1.8" className="fill-accent" />
+            </svg>
+          </div>
         </div>
 
         {/* Share Link Banner */}
@@ -175,11 +236,11 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
       {/* Prompts to Write / Explore */}
       <div className="pt-6 border-t border-hairline flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
         <Link
-          href="/wishes"
+          href="/wishes#write"
           className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors font-medium"
         >
           <PenLine className="w-4 h-4 text-accent" />
-          <span>write your own letter to samkiel →</span>
+          <span>write your own wish to samkiel →</span>
         </Link>
 
         <Link
@@ -193,3 +254,4 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
     </div>
   );
 }
+
