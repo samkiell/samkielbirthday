@@ -17,6 +17,8 @@ import {
   Check,
   Download,
   Share2,
+  Copy,
+  ExternalLink,
 } from "lucide-react";
 import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generator";
 
@@ -35,6 +37,7 @@ export default function WishesPage() {
   const [honeypot, setHoneypot] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [sentSuccess, setSentSuccess] = useState(false);
+  const [createdWish, setCreatedWish] = useState<WishResponse | null>(null);
 
   const maxMessageLen = 280;
 
@@ -104,6 +107,7 @@ export default function WishesPage() {
       setRelationship("");
       setCustomRelationship("");
       setHoneypot("");
+      setCreatedWish(data);
       setSentSuccess(true);
 
       // Add to state
@@ -337,13 +341,26 @@ export default function WishesPage() {
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <time dateTime={w.createdAt}>
                       {new Date(w.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                       })}
                     </time>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const url = `${window.location.origin}/wish/${w.code}`;
+                        navigator.clipboard.writeText(url);
+                        toast.success(`Copied /wish/${w.code}`);
+                      }}
+                      title="Copy letter share link"
+                      className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                    </button>
                     <button
                       type="button"
                       onClick={(e) => {
@@ -403,14 +420,44 @@ export default function WishesPage() {
                 Letter placed on the wall
               </h3>
               <p className="text-muted text-sm leading-relaxed">
-                Thank you for contributing to Chapter 20. Your note is now preserved on the wall.
+                Thank you for contributing to Chapter 20. Your note is now preserved and has a unique share link.
               </p>
             </div>
+
+            {createdWish?.code && (
+              <div className="max-w-md mx-auto p-4 rounded-xl border border-hairline bg-paper flex items-center justify-between gap-3 text-xs font-mono">
+                <span className="text-muted truncate">
+                  /wish/{createdWish.code}
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const url = `${window.location.origin}/wish/${createdWish.code}`;
+                      navigator.clipboard.writeText(url);
+                      toast.success("Letter link copied");
+                    }}
+                    className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
+                  >
+                    Copy Link
+                  </button>
+                  <Link
+                    href={`/wish/${createdWish.code}`}
+                    className="px-2.5 py-1 rounded bg-accent text-paper text-[11px] uppercase transition-colors"
+                  >
+                    Open Card
+                  </Link>
+                </div>
+              </div>
+            )}
 
             <div className="pt-2">
               <button
                 type="button"
-                onClick={() => setSentSuccess(false)}
+                onClick={() => {
+                  setSentSuccess(false);
+                  setCreatedWish(null);
+                }}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-xs"
               >
                 <PenLine className="w-3.5 h-3.5 text-accent" />
@@ -579,6 +626,32 @@ export default function WishesPage() {
             <p className="font-serif text-base sm:text-lg text-ink/90 leading-relaxed whitespace-pre-wrap italic">
               &ldquo;{selectedWish.message}&rdquo;
             </p>
+
+            {/* Share Link Banner */}
+            <div className="p-3 rounded-xl border border-hairline bg-paper/60 flex items-center justify-between gap-3 text-xs font-mono">
+              <span className="text-muted truncate">
+                /wish/{selectedWish.code}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const url = `${window.location.origin}/wish/${selectedWish.code}`;
+                    navigator.clipboard.writeText(url);
+                    toast.success("Letter link copied");
+                  }}
+                  className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
+                >
+                  Copy Link
+                </button>
+                <Link
+                  href={`/wish/${selectedWish.code}`}
+                  className="px-2.5 py-1 rounded bg-accent text-paper text-[11px] uppercase transition-colors"
+                >
+                  Open Page
+                </Link>
+              </div>
+            </div>
 
             <div className="pt-4 border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
               <div className="text-muted">
