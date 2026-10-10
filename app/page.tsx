@@ -69,7 +69,7 @@ export default function HomePage() {
                   data-track="send-letter-hero"
                   className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg border border-hairline text-xs sm:text-sm font-medium text-ink hover:text-accent hover:border-accent/40 bg-paper/60 backdrop-blur-xs transition-all group"
                 >
-                  <span>Send a Letter</span>
+                  <span>Send a Wish</span>
                   <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 text-muted group-hover:text-accent" />
                 </Link>
               </div>
