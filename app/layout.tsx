@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Geist, Geist_Mono, Newsreader, Caveat } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
@@ -21,6 +21,19 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -87,7 +100,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${fraunces.variable} ${geistSans.variable} ${geistMono.variable}`}
+      className={`${fraunces.variable} ${geistSans.variable} ${geistMono.variable} ${caveat.variable} ${newsreader.variable}`}
     >
       <body className="min-h-screen bg-paper text-ink antialiased flex flex-col selection:bg-accent selection:text-paper">
         <ThemeProvider
