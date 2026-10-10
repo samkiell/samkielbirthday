@@ -15,7 +15,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Copy,
-  Shuffle,
 } from "lucide-react";
 
 interface PictureItem {
@@ -67,9 +66,6 @@ export default function PicturesPage() {
   const activePhoto =
     lightboxIndex !== null ? pictures[lightboxIndex] : null;
 
-  const handleShuffle = useCallback(() => {
-    setPictures((prev) => shuffleArray(prev));
-  }, []);
 
   // Shuffle photos on every load / visit
   useEffect(() => {
@@ -208,18 +204,8 @@ export default function PicturesPage() {
             </p>
           </div>
 
-          {/* Controls: Shuffle & View Switcher */}
+          {/* Controls: View Switcher */}
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={handleShuffle}
-              title="Shuffle photo order"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hairline bg-paper text-xs font-mono tracking-wider text-muted hover:text-ink hover:border-ink transition-all cursor-pointer shadow-2xs active:scale-95"
-            >
-              <Shuffle className="w-3.5 h-3.5 text-accent" />
-              <span>Shuffle</span>
-            </button>
-
             {/* View Mode Switcher */}
             <div className="flex items-center gap-1 p-1 rounded-lg border border-hairline bg-paper">
               <button
