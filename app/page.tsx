@@ -416,7 +416,7 @@ export default function HomePage() {
 
               <div className="pt-8 border-t border-hairline space-y-4">
                 <p className="font-serif italic text-lg sm:text-xl text-ink">
-                  Two decades in. Still becoming. Let's see what I do with it.
+                  Two decades in. Still dey on motion. Let's see what I do with it.
                 </p>
                 <button
                   onClick={handleManifestoFinish}
