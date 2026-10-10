@@ -363,7 +363,7 @@ export default function HomePage() {
               href="/wishes"
               className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-accent hover:underline pb-1"
             >
-              <span>open full floating wall →</span>
+              <span>open full wall →</span>
             </Link>
           </div>
 
