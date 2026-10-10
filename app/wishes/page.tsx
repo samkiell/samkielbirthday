@@ -19,6 +19,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generator";
+import { formatWishDateTime } from "@/lib/format-date";
 
 export default function WishesPage() {
   const [wishes, setWishes] = useState<WishResponse[]>([]);
@@ -252,11 +253,8 @@ export default function WishesPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <time dateTime={w.createdAt}>
-                        {new Date(w.createdAt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        })}
+                      <time dateTime={w.createdAt} suppressHydrationWarning>
+                        {formatWishDateTime(w.createdAt, { short: true })}
                       </time>
                       <button
                         type="button"
@@ -554,12 +552,8 @@ export default function WishesPage() {
             <div className="pt-4 border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
               <div className="text-muted">
                 <span>wish for chapter 20 · </span>
-                <time dateTime={selectedWish.createdAt}>
-                  {new Date(selectedWish.createdAt).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
+                <time dateTime={selectedWish.createdAt} suppressHydrationWarning>
+                  {formatWishDateTime(selectedWish.createdAt)}
                 </time>
               </div>
 
