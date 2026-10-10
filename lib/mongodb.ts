@@ -39,7 +39,9 @@ function getClientPromise(): Promise<MongoClient> | null {
 let clientPromise: Promise<MongoClient> | null = getClientPromise();
 
 export async function getDb(): Promise<Db | null> {
-  if (!uri) {
+  const currentUri = process.env.MONGODB_URI;
+  if (!currentUri) {
+    console.error("[getDb] MONGODB_URI is not defined in process.env");
     return null;
   }
 
@@ -53,7 +55,7 @@ export async function getDb(): Promise<Db | null> {
     const client = await clientPromise;
     return client.db("samkielbirthday");
   } catch (err) {
-    console.error("MongoDB connection error:", err);
+    console.error("[getDb] MongoDB connection error:", err);
     // Reset cached promise so subsequent requests can re-attempt connecting cleanly
     clientPromise = null;
     if (typeof global !== "undefined") {
