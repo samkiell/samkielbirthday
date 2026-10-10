@@ -25,7 +25,7 @@ import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generat
 export default function WishesPage() {
   const [wishes, setWishes] = useState<WishResponse[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState<string>("All");
+  const [activeFilter, setActiveFilter] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"floating" | "grid">("floating");
   const [selectedWish, setSelectedWish] = useState<WishResponse | null>(null);
 
@@ -63,21 +63,21 @@ export default function WishesPage() {
     e.preventDefault();
 
     if (!name.trim()) {
-      toast.error("Please enter your name");
+      toast.error("name is required");
       return;
     }
     if (!message.trim()) {
-      toast.error("Please write your letter");
+      toast.error("message is required");
       return;
     }
 
     setSubmitting(true);
     try {
       const finalRelationship =
-        relationship === "Other"
+        relationship.toLowerCase() === "other"
           ? customRelationship.trim()
-            ? `Other: ${customRelationship.trim()}`
-            : "Other"
+            ? `other: ${customRelationship.trim()}`
+            : "other"
           : relationship;
 
       const res = await fetch("/api/wishes", {
@@ -93,12 +93,12 @@ export default function WishesPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        toast.error(data.error || "Could not post your letter");
+        toast.error(data.error || "could not post your letter");
         setSubmitting(false);
         return;
       }
 
-      toast.success("Thank you. Your letter is on the wall!");
+      toast.success("thank you. your letter is on the wall.");
       triggerConfetti();
 
       // Reset
@@ -113,25 +113,26 @@ export default function WishesPage() {
       // Add to state
       setWishes((prev) => [data, ...prev]);
     } catch {
-      toast.error("Failed to connect. Please try again.");
+      toast.error("failed to connect. please try again.");
     } finally {
       setSubmitting(false);
     }
   };
 
   const filteredWishes =
-    activeFilter === "All"
+    activeFilter === "all"
       ? wishes
       : wishes.filter((w) => {
           if (!w.relationship) return false;
-          if (activeFilter === "Other") {
+          const rel = w.relationship.toLowerCase();
+          if (activeFilter === "other") {
             return (
-              w.relationship === "Other" ||
-              w.relationship.startsWith("Other:") ||
-              w.relationship.startsWith("Other (")
+              rel === "other" ||
+              rel.startsWith("other:") ||
+              rel.startsWith("other (")
             );
           }
-          return w.relationship === activeFilter;
+          return rel === activeFilter.toLowerCase();
         });
 
   return (
@@ -144,7 +145,7 @@ export default function WishesPage() {
             className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted hover:text-ink transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to journal</span>
+            <span>back to journal</span>
           </Link>
 
           <div className="flex items-center gap-3">
@@ -153,7 +154,7 @@ export default function WishesPage() {
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-colors shadow-2xs"
             >
               <PenLine className="w-3 h-3" />
-              <span>Write a Letter</span>
+              <span>write a letter</span>
             </a>
           </div>
         </div>
@@ -162,13 +163,13 @@ export default function WishesPage() {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-accent font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Letters for Chapter 20</span>
+              <span>letters for chapter 20</span>
             </div>
             <h1 className="font-serif text-4xl sm:text-6xl text-ink font-normal">
-              The Birthday Wall
+              the birthday wall
             </h1>
             <p className="text-muted text-sm sm:text-base font-serif italic max-w-xl">
-              A living archive of notes, memories, advice, and prayers sent to samkiel as he turns 20.
+              a living archive of notes, memories, advice, and prayers sent to samkiel as he turns 20.
             </p>
           </div>
 
@@ -184,7 +185,7 @@ export default function WishesPage() {
               }`}
             >
               <Waves className="w-3.5 h-3.5" />
-              <span>Floating</span>
+              <span>floating</span>
             </button>
             <button
               type="button"
@@ -196,14 +197,14 @@ export default function WishesPage() {
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
-              <span>Grid</span>
+              <span>grid</span>
             </button>
           </div>
         </div>
 
         {/* Tag Filters */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none pt-2">
-          {["All", ...RELATIONSHIP_OPTIONS].map((opt) => (
+          {["all", ...RELATIONSHIP_OPTIONS].map((opt) => (
             <button
               key={opt}
               type="button"
@@ -225,19 +226,19 @@ export default function WishesPage() {
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center space-y-3 text-muted text-xs font-mono">
             <Loader2 className="w-6 h-6 animate-spin text-accent" />
-            <span>Gathering letters on the wall...</span>
+            <span>gathering letters on the wall...</span>
           </div>
         ) : filteredWishes.length === 0 ? (
           <div className="py-24 text-center space-y-4">
             <p className="font-serif italic text-lg text-muted">
-              No letters yet in this section. Be the first to leave one below.
+              no letters yet in this section. be the first to leave one below.
             </p>
             <a
               href="#write"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90"
             >
               <PenLine className="w-3.5 h-3.5" />
-              <span>Write the first letter</span>
+              <span>write the first letter</span>
             </a>
           </div>
         ) : viewMode === "floating" ? (
@@ -354,7 +355,7 @@ export default function WishesPage() {
                         e.stopPropagation();
                         const url = `${window.location.origin}/wish/${w.code}`;
                         navigator.clipboard.writeText(url);
-                        toast.success(`Copied /wish/${w.code}`);
+                        toast.success(`copied /wish/${w.code}`);
                       }}
                       title="Copy letter share link"
                       className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
@@ -399,13 +400,13 @@ export default function WishesPage() {
         <div className="space-y-3 mb-8 text-center sm:text-left">
           <div className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-accent font-semibold">
             <PenLine className="w-3.5 h-3.5" />
-            <span>Your Personal Message</span>
+            <span>your personal message</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl text-ink font-normal">
-            Write your letter to samkiel
+            write your letter to samkiel
           </h2>
           <p className="text-muted text-sm leading-relaxed">
-            Write your own words, a memory from our days together, words of advice, a prayer, or birthday wishes. It will be preserved on this wall.
+            write your own words, a memory from our days together, words of advice, a prayer, or birthday wishes. it will be preserved on this wall.
           </p>
         </div>
 
@@ -417,10 +418,10 @@ export default function WishesPage() {
 
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
-                Letter placed on the wall
+                letter placed on the wall
               </h3>
               <p className="text-muted text-sm leading-relaxed">
-                Thank you for contributing to Chapter 20. Your note is now preserved and has a unique share link.
+                thank you for contributing to chapter 20. your note is now preserved and has a unique share link.
               </p>
             </div>
 
@@ -435,17 +436,17 @@ export default function WishesPage() {
                     onClick={() => {
                       const url = `${window.location.origin}/wish/${createdWish.code}`;
                       navigator.clipboard.writeText(url);
-                      toast.success("Letter link copied");
+                      toast.success("letter link copied");
                     }}
                     className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
                   >
-                    Copy Link
+                    copy link
                   </button>
                   <Link
                     href={`/wish/${createdWish.code}`}
                     className="px-2.5 py-1 rounded bg-accent text-paper text-[11px] uppercase transition-colors"
                   >
-                    Open Card
+                    open card
                   </Link>
                 </div>
               </div>
@@ -461,7 +462,7 @@ export default function WishesPage() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-xs"
               >
                 <PenLine className="w-3.5 h-3.5 text-accent" />
-                <span>Send another letter</span>
+                <span>send another letter</span>
               </button>
             </div>
           </div>
@@ -488,14 +489,14 @@ export default function WishesPage() {
                 htmlFor="author-name"
                 className="block text-xs font-mono uppercase tracking-wider text-muted"
               >
-                Your name <span className="text-accent">*</span>
+                your name <span className="text-accent">*</span>
               </label>
               <input
                 id="author-name"
                 type="text"
                 required
                 maxLength={60}
-                placeholder="e.g. Tobi or A classmate"
+                placeholder="e.g. tobi or a classmate"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
@@ -507,20 +508,20 @@ export default function WishesPage() {
                 htmlFor="author-relationship"
                 className="block text-xs font-mono uppercase tracking-wider text-muted"
               >
-                Relationship <span className="text-muted/60 text-[10px]">(optional)</span>
+                relationship <span className="text-muted/60 text-[10px]">(optional)</span>
               </label>
               <select
                 id="author-relationship"
                 value={relationship}
                 onChange={(e) => {
                   setRelationship(e.target.value);
-                  if (e.target.value !== "Other") {
+                  if (e.target.value.toLowerCase() !== "other") {
                     setCustomRelationship("");
                   }
                 }}
                 className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
               >
-                <option value="">Select how you know me</option>
+                <option value="">select how you know me</option>
                 {RELATIONSHIP_OPTIONS.map((opt) => (
                   <option key={opt} value={opt}>
                     {opt}
@@ -528,12 +529,12 @@ export default function WishesPage() {
                 ))}
               </select>
 
-              {relationship === "Other" && (
+              {relationship.toLowerCase() === "other" && (
                 <div className="pt-2 animate-in fade-in slide-in-from-top-1 duration-200">
                   <input
                     type="text"
                     maxLength={50}
-                    placeholder="Please specify (e.g. Mentor, Secondary school, Church)..."
+                    placeholder="please specify (e.g. mentor, secondary school, church)..."
                     value={customRelationship}
                     onChange={(e) => setCustomRelationship(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
@@ -550,7 +551,7 @@ export default function WishesPage() {
                 htmlFor="letter-content"
                 className="block text-xs font-mono uppercase tracking-wider text-muted"
               >
-                Your letter <span className="text-accent">*</span>
+                your letter <span className="text-accent">*</span>
               </label>
               <span
                 className={`text-[11px] font-mono ${
@@ -565,7 +566,7 @@ export default function WishesPage() {
               required
               rows={4}
               maxLength={maxMessageLen}
-              placeholder="Dear samkiel, write your letter, memory, advice, or birthday wish here..."
+              placeholder="dear samkiel, write your letter, memory, advice, or birthday wish here..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors resize-none"
@@ -580,12 +581,12 @@ export default function WishesPage() {
             {submitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Placing on wall...</span>
+                <span>placing on wall...</span>
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Place letter on wall</span>
+                <span>place letter on wall</span>
               </>
             )}
           </button>
@@ -638,24 +639,24 @@ export default function WishesPage() {
                   onClick={() => {
                     const url = `${window.location.origin}/wish/${selectedWish.code}`;
                     navigator.clipboard.writeText(url);
-                    toast.success("Letter link copied");
+                    toast.success("letter link copied");
                   }}
                   className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
                 >
-                  Copy Link
+                  copy link
                 </button>
                 <Link
                   href={`/wish/${selectedWish.code}`}
                   className="px-2.5 py-1 rounded bg-accent text-paper text-[11px] uppercase transition-colors"
                 >
-                  Open Page
+                  open page
                 </Link>
               </div>
             </div>
 
             <div className="pt-4 border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
               <div className="text-muted">
-                <span>Letter for Chapter 20 · </span>
+                <span>letter for chapter 20 · </span>
                 <time dateTime={selectedWish.createdAt}>
                   {new Date(selectedWish.createdAt).toLocaleDateString("en-US", {
                     month: "long",
@@ -673,7 +674,7 @@ export default function WishesPage() {
                   title="Download letter as PNG"
                 >
                   <Download className="w-3.5 h-3.5 text-accent" />
-                  <span>Download PNG</span>
+                  <span>download png</span>
                 </button>
 
                 <button
@@ -683,7 +684,7 @@ export default function WishesPage() {
                   title="Share letter image"
                 >
                   <Share2 className="w-3.5 h-3.5" />
-                  <span>Share</span>
+                  <span>share</span>
                 </button>
               </div>
             </div>
