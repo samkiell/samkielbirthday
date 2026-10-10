@@ -445,7 +445,7 @@ export function WishSection() {
           href="/wishes"
           className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors"
         >
-          <span>open full floating wall →</span>
+          <span>open full wall →</span>
         </Link>
       </div>
     </div>
