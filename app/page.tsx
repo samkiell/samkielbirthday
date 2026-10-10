@@ -26,46 +26,47 @@ export default function HomePage() {
       <ChapterNav />
 
       {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 md:pl-16 md:pr-8 lg:pl-20 lg:pr-8 xl:pl-24 xl:pr-8 pt-4 sm:pt-6 md:pt-8 pb-16 md:pb-24 space-y-24 md:space-y-36">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 md:pl-16 md:pr-8 lg:pl-20 lg:pr-8 xl:pl-24 xl:pr-8 pt-1 sm:pt-4 md:pt-8 pb-16 md:pb-24 space-y-20 md:space-y-36">
         {/* CHAPTER 01: Hero Section */}
         <section
           id="chapter-01"
-          className="flex flex-col justify-start pt-2 md:pt-4 scroll-mt-24"
+          className="flex flex-col justify-start pt-1 md:pt-4 scroll-mt-24"
         >
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8 md:gap-8 items-center">
             {/* Left Column: Headlines & CTA */}
-            <div className="md:col-span-7 space-y-6 sm:space-y-8 order-2 md:order-1">
+            <div className="md:col-span-7 space-y-3.5 sm:space-y-6 md:space-y-8 order-2 md:order-1">
               <div className="inline-block">
-                <span className="text-[11px] font-mono tracking-[0.25em] uppercase text-muted font-semibold">
+                <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.25em] uppercase text-muted font-semibold">
                   October 11
                 </span>
               </div>
 
-              <div className="space-y-2">
-                <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal tracking-tight text-ink leading-[1.05]">
-                  Two decades in. <br />
-                  Still{" "}
-                  <span className="italic text-accent">becoming.</span>
+              <div className="space-y-1 sm:space-y-2">
+                <h1 className="font-serif text-[32px] xs:text-[38px] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-normal tracking-tight text-ink leading-[1.08] sm:leading-[1.05]">
+                  two decades in. <br />
+                  still{" "}
+                  <span className="italic text-accent">dey on motion.</span>
                 </h1>
               </div>
 
-              <div className="space-y-1 font-sans text-base sm:text-lg text-muted max-w-md">
+              <div className="space-y-0.5 font-sans text-xs sm:text-base md:text-lg text-muted max-w-md">
                 <p>Grateful for the journey so far.</p>
                 <p>Excited for what's ahead.</p>
               </div>
 
-              <div className="pt-2 flex flex-wrap items-center gap-5 sm:gap-6">
+              <div className="pt-1 flex flex-wrap items-center gap-3 sm:gap-6">
                 <button
+                  data-track="begin"
                   onClick={handleBegin}
-                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-lg bg-accent text-paper text-sm font-medium hover:bg-accent/90 transition-all cursor-pointer shadow-sm group"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-lg bg-accent text-paper text-xs sm:text-sm font-medium hover:bg-accent/90 transition-all cursor-pointer shadow-sm group"
                 >
                   <span>Explore My Story</span>
-                  <ArrowDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                  <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-y-0.5" />
                 </button>
 
                 <a
                   href="#chapter-02"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-muted hover:text-ink transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-mono uppercase tracking-wider text-muted hover:text-ink transition-colors"
                 >
                   <span>Scroll to begin ↓</span>
                 </a>
@@ -74,7 +75,7 @@ export default function HomePage() {
 
             {/* Right Column: Arched Portrait Photo + Chapter 20 Badge */}
             <div className="md:col-span-5 order-1 md:order-2 flex justify-center md:justify-end relative">
-              <div className="relative w-[260px] sm:w-[300px] md:w-[320px] lg:w-[340px]">
+              <div className="relative w-[190px] xs:w-[220px] sm:w-[280px] md:w-[320px] lg:w-[340px]">
                 {/* Botanical leaf decorations */}
                 <svg
                   className="absolute -top-8 -left-8 w-24 h-24 text-accent/25 pointer-events-none -rotate-12 hidden sm:block"
@@ -97,28 +98,29 @@ export default function HomePage() {
                 </svg>
 
                 {/* Arched Photo Frame */}
-                <div className="relative aspect-[3/4] w-full rounded-t-[160px] sm:rounded-t-[190px] rounded-b-2xl border border-hairline overflow-hidden bg-[#EFEAE1] dark:bg-[#1C1B17] shadow-sm">
+                <div className="relative aspect-[3/4] w-full rounded-t-[100px] xs:rounded-t-[120px] sm:rounded-t-[160px] md:rounded-t-[190px] rounded-b-2xl border border-hairline overflow-hidden bg-[#EFEAE1] dark:bg-[#1C1B17] shadow-sm">
                   <Image
-                    src="/pictures/whitecaftan.jpg"
+                    src="/pictures/samkielbday01.jpg"
                     alt="samkiel portrait for chapter 20"
                     fill
                     priority
-                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 360px"
+                    quality={95}
+                    sizes="(max-width: 640px) 240px, (max-width: 1024px) 340px, 420px"
                     className="object-cover object-top"
                   />
                   {/* Subtle inner border */}
-                  <div className="absolute inset-0 rounded-t-[160px] sm:rounded-t-[190px] rounded-b-2xl ring-1 ring-inset ring-black/5 dark:ring-white/10 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-t-[100px] xs:rounded-t-[120px] sm:rounded-t-[160px] md:rounded-t-[190px] rounded-b-2xl ring-1 ring-inset ring-black/5 dark:ring-white/10 pointer-events-none" />
                 </div>
 
                 {/* Floating Chapter 20 Badge */}
-                <div className="absolute top-1/2 -right-3 sm:-right-6 -translate-y-1/2 w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-hairline bg-paper/95 backdrop-blur-xs flex flex-col items-center justify-center shadow-md">
-                  <span className="text-[9px] font-mono tracking-widest uppercase text-muted">
+                <div className="absolute top-1/2 -right-3 sm:-right-6 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full border border-hairline bg-paper/95 backdrop-blur-xs flex flex-col items-center justify-center shadow-md">
+                  <span className="text-[8px] sm:text-[9px] font-mono tracking-widest uppercase text-muted">
                     CHAPTER
                   </span>
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-accent leading-none my-0.5">
+                  <span className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-accent leading-none my-0.5">
                     20
                   </span>
-                  <span className="text-[9px] font-mono tracking-widest text-muted">
+                  <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-muted">
                     2026
                   </span>
                 </div>
