@@ -11,10 +11,18 @@ export const metadata: Metadata = {
     url: "https://birthday.samkiel.dev/pictures",
     images: [
       {
-        url: "/pictures/samkielbday01.jpg",
-        width: 1200,
-        height: 1500,
+        url: "https://birthday.samkiel.dev/og-portrait.jpg",
+        width: 1080,
+        height: 1350,
+        type: "image/jpeg",
         alt: "samkiel - Chapter 20 portrait",
+      },
+      {
+        url: "https://birthday.samkiel.dev/og-square.jpg",
+        width: 1000,
+        height: 1000,
+        type: "image/jpeg",
+        alt: "samkiel - Chapter 20 square portrait",
       },
     ],
   },
@@ -22,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Birthday Pictures · samkiel turns 20",
     description: "A visual archive of the journey into Chapter 20.",
-    images: ["/pictures/samkielbday01.jpg"],
+    images: ["https://birthday.samkiel.dev/og-portrait.jpg"],
   },
 };
 
