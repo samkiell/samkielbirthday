@@ -371,7 +371,7 @@ export default function HomePage() {
         </section>
 
         {/* CHAPTER 05: The next chapter (Focused Manifesto) */}
-        <div className="max-w-[680px] mx-auto space-y-28 md:space-y-40">
+        <div className="max-w-[680px] mx-auto space-y-12 sm:space-y-16">
           <section id="chapter-05" className="space-y-12 scroll-mt-24">
             <div className="space-y-2 border-b border-hairline pb-4">
               <span className="text-xs font-mono tracking-widest uppercase text-muted">
@@ -434,7 +434,7 @@ export default function HomePage() {
           </section>
 
           {/* Footer */}
-          <footer className="pt-12 sm:pt-16 pb-4 sm:pb-16 border-t border-hairline text-center space-y-3">
+          <footer className="pt-8 sm:pt-10 pb-6 sm:pb-8 border-t border-hairline text-center space-y-2.5">
             <div className="font-mono text-xs tracking-widest text-ink font-medium">
               <span className="lowercase">samkiel</span> · <span className="lowercase">One push at a time</span>
             </div>
