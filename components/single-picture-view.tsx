@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { PictureItem } from "@/lib/pictures-data";
-import { ArrowLeft, Download, Share2, MessageCircle, Copy, Loader2, Heart } from "lucide-react";
+import { ArrowLeft, Download, Share2, Copy, Loader2, Heart } from "lucide-react";
 
 interface SinglePictureViewProps {
   pic: PictureItem;
@@ -13,7 +13,6 @@ interface SinglePictureViewProps {
 
 export function SinglePictureView({ pic }: SinglePictureViewProps) {
   const [sharing, setSharing] = useState(false);
-  const [waSharing, setWaSharing] = useState(false);
 
   const handleDownload = async () => {
     const filename = pic.filename;
@@ -104,89 +103,6 @@ export function SinglePictureView({ pic }: SinglePictureViewProps) {
     }
   };
 
-  const handleWhatsApp = async () => {
-    if (waSharing) return;
-    setWaSharing(true);
-
-    const shareUrl = `${window.location.origin}/pictures/${pic.id}`;
-    const cleanTitle = pic.title.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
-    const shareImgSrc = `/share-images/${pic.id}.jpg`;
-
-    try {
-      const res = await fetch(shareImgSrc);
-      let file: File | null = null;
-      let blob: Blob | null = null;
-      if (res.ok) {
-        blob = await res.blob();
-        file = new File([blob], `samkiel-${cleanTitle}.jpg`, { type: "image/jpeg" });
-      }
-
-      // Mobile: Native share sheet with real image attached
-      if (file && typeof navigator !== "undefined" && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: `samkiel turns 20 · ${pic.title}`,
-            text: `celebrating samkiel's 20th birthday: two decades in. still dey on motion.\n${shareUrl}`,
-          });
-          return;
-        } catch (shareErr: unknown) {
-          if ((shareErr as { name?: string })?.name === "AbortError") {
-            return;
-          }
-        }
-      }
-
-      // Desktop: Copy image to clipboard so Ctrl+V pastes directly into WhatsApp Web
-      if (blob && typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.write) {
-        try {
-          const img = document.createElement("img");
-          img.crossOrigin = "anonymous";
-          img.src = URL.createObjectURL(blob);
-          await new Promise((resolve) => {
-            img.onload = resolve;
-            img.onerror = resolve;
-          });
-          const canvas = document.createElement("canvas");
-          canvas.width = img.naturalWidth || 1200;
-          canvas.height = img.naturalHeight || 1200;
-          const ctx = canvas.getContext("2d");
-          if (ctx) {
-            ctx.drawImage(img, 0, 0);
-            await new Promise<void>((resolve) => {
-              canvas.toBlob(async (pngBlob) => {
-                if (pngBlob) {
-                  try {
-                    await navigator.clipboard.write([
-                      new ClipboardItem({ "image/png": pngBlob }),
-                    ]);
-                    toast.success("Photo copied to clipboard! Paste (Ctrl+V) directly in WhatsApp", {
-                      duration: 6000,
-                    });
-                  } catch {
-                    // Clipboard write failed
-                  }
-                }
-                resolve();
-              }, "image/png");
-            });
-          }
-        } catch {
-          // Ignore
-        }
-      }
-
-      const waText = encodeURIComponent(
-        `celebrating samkiel's 20th birthday! check out this photo: ${shareUrl}`
-      );
-      window.open(`https://wa.me/?text=${waText}`, "_blank", "noopener,noreferrer");
-    } catch {
-      toast.error("could not open whatsapp");
-    } finally {
-      setWaSharing(false);
-    }
-  };
-
   const handleCopyLink = () => {
     const shareUrl = `${window.location.origin}/pictures/${pic.id}`;
     navigator.clipboard.writeText(shareUrl);
@@ -234,28 +150,14 @@ export function SinglePictureView({ pic }: SinglePictureViewProps) {
           <div className="flex flex-wrap items-center gap-2.5 pt-2">
             <button
               type="button"
-              onClick={handleWhatsApp}
-              disabled={waSharing}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-mono font-medium transition-all cursor-pointer shadow-xs disabled:opacity-50 active:scale-98"
-            >
-              {waSharing ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <MessageCircle className="w-4 h-4" />
-              )}
-              <span>{waSharing ? "preparing image..." : "share to whatsapp"}</span>
-            </button>
-
-            <button
-              type="button"
               onClick={handleShare}
               disabled={sharing}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-hairline hover:border-ink/30 bg-paper hover:bg-hairline/20 text-ink text-xs font-mono transition-all cursor-pointer disabled:opacity-50 active:scale-98"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-paper hover:bg-accent/90 text-xs font-mono font-medium transition-all cursor-pointer shadow-xs disabled:opacity-50 active:scale-98"
             >
               {sharing ? (
-                <Loader2 className="w-4 h-4 animate-spin text-accent" />
+                <Loader2 className="w-4 h-4 animate-spin text-paper" />
               ) : (
-                <Share2 className="w-4 h-4 text-accent" />
+                <Share2 className="w-4 h-4 text-paper" />
               )}
               <span>{sharing ? "attaching..." : "share photo"}</span>
             </button>
