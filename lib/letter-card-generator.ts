@@ -11,124 +11,62 @@ export interface LetterCardData {
 export type WishCardData = LetterCardData;
 
 /**
- * Draws an elegant, detailed fountain pen resting on paper ("pen dropped, as per done writing").
+ * Draws a minimalist editorial pen nib emblem / colophon flanked by delicate hairline rules.
+ * Replaces realistic pen illustrations with a refined publisher insignia.
  */
-function drawFountainPen(
+function drawEditorialInsignia(
   ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  angleRad: number,
-  isDark: boolean
+  centerX: number,
+  centerY: number,
+  accentColor: string,
+  hairlineColor: string
 ) {
   ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(angleRad);
 
-  // 1. Soft realistic drop shadow under resting pen
-  ctx.save();
-  ctx.shadowColor = isDark ? "rgba(0, 0, 0, 0.65)" : "rgba(32, 26, 18, 0.18)";
-  ctx.shadowBlur = 14;
-  ctx.shadowOffsetY = 6;
-  ctx.fillStyle = isDark ? "rgba(0, 0, 0, 0.45)" : "rgba(20, 16, 10, 0.15)";
+  // 1. Subtle flanking hairline rules
+  const ruleLength = 70;
+  const gap = 22;
+
+  ctx.strokeStyle = hairlineColor;
+  ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.roundRect(-105, -5, 230, 10, 5);
-  ctx.fill();
-  ctx.restore();
+  ctx.moveTo(centerX - gap - ruleLength, centerY);
+  ctx.lineTo(centerX - gap, centerY);
+  ctx.moveTo(centerX + gap, centerY);
+  ctx.lineTo(centerX + gap + ruleLength, centerY);
+  ctx.stroke();
 
-  // 2. Pen Barrel (rich lacquered finish with subtle specular highlight)
-  const barrelGrad = ctx.createLinearGradient(0, -7.5, 0, 7.5);
-  if (isDark) {
-    barrelGrad.addColorStop(0, "#23332A");
-    barrelGrad.addColorStop(0.35, "#345543");
-    barrelGrad.addColorStop(1, "#18241E");
-  } else {
-    barrelGrad.addColorStop(0, "#1B3326");
-    barrelGrad.addColorStop(0.35, "#2C523F");
-    barrelGrad.addColorStop(1, "#15261D");
-  }
-  ctx.fillStyle = barrelGrad;
+  // 2. Center editorial fountain pen nib icon
+  ctx.translate(centerX, centerY);
+  ctx.strokeStyle = accentColor;
+  ctx.fillStyle = accentColor;
+  ctx.lineWidth = 1.4;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  // Base collar
   ctx.beginPath();
-  ctx.roundRect(-102, -7, 134, 14, [6, 0, 0, 6]);
-  ctx.fill();
+  ctx.moveTo(-5.5, -11);
+  ctx.lineTo(5.5, -11);
+  ctx.stroke();
 
-  // Gold end finial
-  ctx.fillStyle = "#C8A14E";
+  // Symmetrical nib outline
   ctx.beginPath();
-  ctx.roundRect(-105, -5.5, 4, 11, [2, 0, 0, 2]);
-  ctx.fill();
-
-  // 3. Center Gold Band / Ring
-  const goldGrad = ctx.createLinearGradient(0, -7.5, 0, 7.5);
-  goldGrad.addColorStop(0, "#E6C66D");
-  goldGrad.addColorStop(0.45, "#FFF1BF");
-  goldGrad.addColorStop(1, "#B88E33");
-  ctx.fillStyle = goldGrad;
-  ctx.fillRect(32, -7.5, 7, 15);
-
-  // 4. Section / Grip (sculpted matte charcoal resin grip)
-  const gripGrad = ctx.createLinearGradient(0, -6.5, 0, 6.5);
-  gripGrad.addColorStop(0, "#2B2A28");
-  gripGrad.addColorStop(0.5, "#3D3B38");
-  gripGrad.addColorStop(1, "#1C1B19");
-  ctx.fillStyle = gripGrad;
-  ctx.beginPath();
-  ctx.moveTo(39, -7);
-  ctx.lineTo(72, -5);
-  ctx.lineTo(72, 5);
-  ctx.moveTo(72, 5);
-  ctx.lineTo(39, 7);
-  ctx.closePath();
-  ctx.fill();
-
-  // 5. Nib Collar (polished gold ring)
-  ctx.fillStyle = goldGrad;
-  ctx.fillRect(72, -5.5, 3.5, 11);
-
-  // 6. Classic Fountain Pen Nib (spade/arrowhead shaped dual-tone gold nib)
-  const nibGrad = ctx.createLinearGradient(75, 0, 118, 0);
-  nibGrad.addColorStop(0, "#DFC26C");
-  nibGrad.addColorStop(0.55, "#F9E8A2");
-  nibGrad.addColorStop(1, "#E5C362");
-
-  ctx.fillStyle = nibGrad;
-  ctx.beginPath();
-  ctx.moveTo(75.5, -5.2);
-  ctx.quadraticCurveTo(86, -7.2, 94, -5.8);
-  ctx.lineTo(118, 0);
-  ctx.lineTo(94, 5.8);
-  ctx.quadraticCurveTo(86, 7.2, 75.5, 5.2);
-  ctx.closePath();
-  ctx.fill();
-
-  // Nib central ink slit
-  ctx.strokeStyle = isDark ? "#12110E" : "#2E2413";
-  ctx.lineWidth = 0.9;
-  ctx.beginPath();
-  ctx.moveTo(88, 0);
-  ctx.lineTo(118, 0);
+  ctx.moveTo(-5.5, -11);
+  ctx.bezierCurveTo(-7.5, -4, -6.5, 3, 0, 11);
+  ctx.bezierCurveTo(6.5, 3, 7.5, -4, 5.5, -11);
   ctx.stroke();
 
   // Breather hole
-  ctx.fillStyle = isDark ? "#12110E" : "#2E2413";
   ctx.beginPath();
-  ctx.arc(88, 0, 1.4, 0, Math.PI * 2);
+  ctx.arc(0, -0.5, 1.3, 0, Math.PI * 2);
   ctx.fill();
 
-  // Nib wing scrollwork engraving
-  ctx.strokeStyle = "rgba(160, 120, 40, 0.45)";
-  ctx.lineWidth = 0.7;
+  // Central ink slit
   ctx.beginPath();
-  ctx.moveTo(78, -3.2);
-  ctx.quadraticCurveTo(88, -4.8, 98, -2.8);
-  ctx.moveTo(78, 3.2);
-  ctx.quadraticCurveTo(88, 4.8, 98, 2.8);
+  ctx.moveTo(0, 0.8);
+  ctx.lineTo(0, 11);
   ctx.stroke();
-
-  // 7. Fresh ink drop at the nib point ("done writing")
-  ctx.fillStyle = isDark ? "rgba(111, 195, 158, 0.75)" : "rgba(31, 77, 58, 0.75)";
-  ctx.beginPath();
-  ctx.arc(125, 1.5, 2.4, 0, Math.PI * 2);
-  ctx.fill();
 
   ctx.restore();
 }
@@ -141,13 +79,24 @@ export async function generateLetterCard(
   data: LetterCardData
 ): Promise<{ blob: Blob; dataUrl: string }> {
   // Ensure web fonts are ready before rendering
-  if (typeof document !== "undefined" && document.fonts) {
-    try {
-      await document.fonts.load('italic 400 36px "Newsreader"');
-      await document.fonts.load('600 24px "Newsreader"');
-      await document.fonts.ready;
-    } catch {
-      // Fallback
+  if (typeof document !== "undefined") {
+    const fontId = "editorial-card-fonts";
+    if (!document.getElementById(fontId)) {
+      const link = document.createElement("link");
+      link.id = fontId;
+      link.rel = "stylesheet";
+      link.href =
+        "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap";
+      document.head.appendChild(link);
+    }
+    if (document.fonts) {
+      try {
+        await document.fonts.load('italic 400 36px "Newsreader"');
+        await document.fonts.load('600 24px "Newsreader"');
+        await document.fonts.ready;
+      } catch {
+        // Fallback
+      }
     }
   }
 
@@ -263,12 +212,15 @@ export async function generateLetterCard(
 
   // 4. Message Text (Word Wrapping & Premium Editorial Typography)
   const maxTextWidth = contentWidth - 48;
-  const msgLen = data.message.length;
-  const fontSize = msgLen > 220 ? 32 : msgLen > 140 ? 36 : msgLen > 70 ? 42 : 46;
-  const lineHeight = Math.round(fontSize * 1.5);
+  const cleanMessage = data.message.replace(/^["“'”]+|["“'”]+$/g, "").trim();
+  const quotedMessage = `“${cleanMessage}”`;
+
+  const msgLen = quotedMessage.length;
+  const fontSize = msgLen > 240 ? 30 : msgLen > 160 ? 34 : msgLen > 80 ? 40 : 46;
+  const lineHeight = Math.round(fontSize * 1.55);
   ctx.font = `italic 400 ${fontSize}px "Newsreader", "Fraunces", Georgia, serif`;
 
-  const words = data.message.split(/\s+/);
+  const words = quotedMessage.split(/\s+/);
   const lines: string[] = [];
   let currentLine = "";
 
@@ -287,30 +239,22 @@ export async function generateLetterCard(
   }
 
   // Vertical placement inside square card
-  // Header ends at 126; pen + footer begins at 840. Available space ~ 714px.
   const textBlockHeight = lines.length * lineHeight;
-  const availableHeight = 720;
-  const textStartY = 160 + Math.max(20, (availableHeight - textBlockHeight - 110) / 2);
+  const availableHeight = 670;
+  const textStartY = 160 + Math.max(20, (availableHeight - textBlockHeight) / 2);
 
-  // Quotation mark ornament
-  ctx.font = 'italic 400 64px "Newsreader", Georgia, serif';
-  ctx.fillStyle = colors.quote;
-  ctx.fillText("“", contentLeft, textStartY - 18);
-
-  // Render wrapped editorial message lines
+  // Render wrapped editorial message lines (begins with “ and ends with ”)
   ctx.font = `italic 400 ${fontSize}px "Newsreader", "Fraunces", Georgia, serif`;
   ctx.fillStyle = colors.ink;
   ctx.textBaseline = "middle";
 
   lines.forEach((line, i) => {
-    ctx.fillText(line, contentLeft + 36, textStartY + i * lineHeight);
+    ctx.fillText(line, contentLeft + 24, textStartY + i * lineHeight);
   });
 
-  // 5. Dropped Fountain Pen Design ("as per done writing")
-  // Rest gently between message text and footer line
-  const penY = Math.min(880, Math.max(textStartY + textBlockHeight + 50, 780));
-  const penX = contentLeft + 160;
-  drawFountainPen(ctx, penX, penY, -0.22, isDark); // tilted ~-12.6 degrees
+  // 5. Editorial Nib Insignia Divider ("done writing" publisher colophon)
+  const insigniaY = Math.min(880, Math.max(textStartY + textBlockHeight + 48, 770));
+  drawEditorialInsignia(ctx, width / 2, insigniaY, colors.accent, colors.hairline);
 
   // 6. Footer Area
   const footerLineY = 940;
