@@ -36,9 +36,9 @@ export function Navbar() {
         {/* Left: Brand */}
         <Link
           href="/"
-          className="font-serif tracking-[0.2em] uppercase text-sm sm:text-base font-semibold text-ink hover:text-accent transition-colors"
+          className="font-serif tracking-[0.15em] lowercase text-sm sm:text-base font-semibold text-ink hover:text-accent transition-colors"
         >
-          SAMKIEL
+          samkiel🎉
         </Link>
 
         {/* Center: Desktop Nav Links */}
