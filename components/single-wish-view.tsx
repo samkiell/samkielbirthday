@@ -18,6 +18,7 @@ import {
   downloadLetterAsPng,
   shareLetterAsPng,
 } from "@/lib/letter-card-generator";
+import { formatWishDateTime } from "@/lib/format-date";
 
 interface SingleWishViewProps {
   wish: WishResponse;
@@ -53,11 +54,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
     window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
   };
 
-  const formattedDate = new Date(wish.createdAt).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const formattedDate = formatWishDateTime(wish.createdAt);
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 md:py-16 space-y-10">
@@ -97,6 +94,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
             )}
             <time
               dateTime={wish.createdAt}
+              suppressHydrationWarning
               className="text-[11px] font-mono text-muted/80"
             >
               {formattedDate}
