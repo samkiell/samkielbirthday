@@ -428,7 +428,7 @@ export default function HomePage() {
           {/* Footer */}
           <footer className="pt-16 pb-20 border-t border-hairline text-center space-y-3">
             <div className="font-mono text-xs tracking-widest text-ink font-medium">
-              <span className="lowercase">samkiel</span> · <span className="uppercase">One push at a time</span>
+              <span className="lowercase">samkiel</span> · <span className="lowercase">One push at a time</span>
             </div>
             <div className="text-xs text-muted font-mono flex items-center justify-center gap-3">
               <a
