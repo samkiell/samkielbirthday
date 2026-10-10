@@ -1,3 +1,5 @@
+import { formatWishDateTime } from "./format-date";
+
 export interface LetterCardData {
   code?: string;
   name: string;
@@ -187,14 +189,8 @@ export async function generateLetterCard(
   ctx.textBaseline = "middle";
   ctx.fillText("samkiel · chapter 20", contentLeft, 96);
 
-  // Header Date
-  const dateStr = data.createdAt
-    ? new Date(data.createdAt).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
-    : "October 11, 2026";
+  // Header Date & Time
+  const dateStr = formatWishDateTime(data.createdAt, { short: true });
 
   ctx.font = "400 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
   ctx.fillStyle = colors.muted;
