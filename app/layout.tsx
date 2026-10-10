@@ -3,6 +3,7 @@ import { Fraunces, Geist, Geist_Mono, Newsreader, Caveat } from "next/font/googl
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -126,6 +127,7 @@ export default function RootLayout({
         >
           <Navbar />
           <AnalyticsTracker />
+          <Analytics />
 
           <main className="flex-1 pt-16">{children}</main>
 
