@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getApprovedWishes } from "@/lib/wishes-service";
 import { recordServerEvent } from "@/lib/analytics-service";
+import { formatWishDateTime } from "@/lib/format-date";
 import {
   Document,
   Page,
@@ -116,11 +117,7 @@ function WishesPdfDocument({ wishes }: { wishes: Array<{ id: string; name: strin
                 ) : null}
               </View>
               <Text style={styles.wishDate}>
-                {new Date(w.createdAt).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
+                {formatWishDateTime(w.createdAt, { short: true })}
               </Text>
             </View>
           </View>
