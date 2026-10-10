@@ -420,7 +420,7 @@ export default function HomePage() {
                   another year. another chapter. let&apos;s see what i do with it.
                 </p>
                 <p className="text-xs font-mono text-muted">
-                  you&apos;ve read up to this point, omo u don try, 1 api credits for u😹
+                  you&apos;ve read up to this point, omo u don try, 1 api credit for u😹
                 </p>
                 <button
                   onClick={handleManifestoFinish}
