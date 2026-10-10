@@ -6,7 +6,7 @@ const CHAPTERS = [
   { id: "chapter-01", num: "01", label: "Opening" },
   { id: "chapter-02", num: "02", label: "Story" },
   { id: "chapter-03", num: "03", label: "Learning" },
-  { id: "chapter-04", num: "04", label: "Letters" },
+  { id: "chapter-04", num: "04", label: "Wishes" },
   { id: "chapter-05", num: "05", label: "Manifesto" },
 ];
 
@@ -66,17 +66,6 @@ export function ChapterNav() {
 
   return (
     <>
-      {/* Mobile Top Progress Line */}
-      <div
-        className="fixed top-0 left-0 right-0 h-0.5 z-50 bg-transparent md:hidden"
-        aria-hidden="true"
-      >
-        <div
-          className="h-full bg-accent transition-[width] duration-150 ease-out"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
-
       {/* Desktop Sticky Chapter Index (Left Dock) */}
       <nav
         aria-label="Chapter navigation"
