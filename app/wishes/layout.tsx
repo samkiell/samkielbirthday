@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Letters & Birthday Wishes",
+  title: "Birthday Wishes",
   description:
-    "Leave a letter or wish for samkiel as he enters Chapter 20. Read notes from friends, mentors, and family.",
+    "Leave a birthday wish for samkiel as he enters Chapter 20. Read notes from friends, mentors, and family.",
   openGraph: {
-    title: "Letters & Birthday Wishes · samkiel turns 20",
+    title: "Birthday Wishes · samkiel turns 20",
     description:
-      "Leave a letter or wish for samkiel as he enters Chapter 20. Read notes from friends, mentors, and family.",
+      "Leave a birthday wish for samkiel as he enters Chapter 20. Read notes from friends, mentors, and family.",
     url: "https://birthday.samkiel.dev/wishes",
     images: [
       {
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Letters & Birthday Wishes · samkiel turns 20",
-    description: "Leave a letter or wish for samkiel as he enters Chapter 20.",
+    title: "Birthday Wishes · samkiel turns 20",
+    description: "Leave a birthday wish for samkiel as he enters Chapter 20.",
     images: ["/pictures/samkielbday01.jpg"],
   },
 };
