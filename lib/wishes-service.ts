@@ -9,20 +9,20 @@ export const wishInputSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, "Name is required")
-    .max(60, "Name must be 60 characters or fewer"),
+    .min(1, "name is required")
+    .max(60, "keep it under 60 characters"),
   message: z
     .string()
     .trim()
-    .min(1, "Message is required")
-    .max(280, "Message must be 280 characters or fewer"),
+    .min(1, "message is required")
+    .max(280, "keep it under 280 characters"),
   relationship: z
     .string()
     .trim()
-    .max(50, "Relationship must be 50 characters or fewer")
+    .max(50, "relationship must be 50 characters or fewer")
     .optional()
     .or(z.literal("").transform(() => undefined)),
-  honeypot: z.string().max(0, "Bot detected").optional(),
+  honeypot: z.string().max(0, "bot detected").optional(),
 });
 
 export type WishInput = z.infer<typeof wishInputSchema>;
@@ -83,7 +83,7 @@ const memoryWishes: WishDocument[] = [
     name: "A friend",
     message:
       "Happy 20th birthday samkiel. Keep building with intention. Watching your journey from the button phone days to now is inspiring.",
-    relationship: "Friend",
+    relationship: "friend",
     status: "approved",
     createdAt: new Date("2026-10-10T08:00:00Z"),
     ipHash: "seed",
@@ -94,7 +94,7 @@ const memoryWishes: WishDocument[] = [
     name: "Fellow Dev",
     message:
       "Happy birthday bro. Excited for what chapter 20 brings for you and your startup. Keep raising the bar.",
-    relationship: "Fellow developer",
+    relationship: "fellow developer",
     status: "approved",
     createdAt: new Date("2026-10-10T10:30:00Z"),
     ipHash: "seed",
@@ -201,7 +201,7 @@ export async function createWish(
 ): Promise<{ success: boolean; wish?: WishResponse; error?: string }> {
   // 1. Honeypot check
   if (data.honeypot && data.honeypot.trim().length > 0) {
-    return { success: false, error: "Submission rejected" };
+    return { success: false, error: "submission rejected" };
   }
 
   // 2. Rate limit check
@@ -209,7 +209,7 @@ export async function createWish(
   if (!checkRateLimit(ipHash)) {
     return {
       success: false,
-      error: "Rate limit reached. Maximum 3 letters per hour.",
+      error: "easy, max 3 letters an hour",
     };
   }
 
@@ -217,7 +217,7 @@ export async function createWish(
   if (containsProfanity(data.name) || containsProfanity(data.message)) {
     return {
       success: false,
-      error: "Your note contains flagged language. Please rephrase politely.",
+      error: "that has some flagged words in it, try rephrasing",
     };
   }
 
