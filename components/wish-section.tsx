@@ -108,9 +108,12 @@ export function WishSection() {
   return (
     <div className="space-y-16">
       {/* Introduction */}
-      <div className="space-y-3">
-        <p className="text-muted text-sm sm:text-base italic">
-          Leave me a note for this chapter. I will be reading these long after October 11.
+      <div className="space-y-2">
+        <h3 className="font-serif text-2xl text-ink font-medium">
+          Write a letter to samkiel
+        </h3>
+        <p className="text-muted text-sm leading-relaxed">
+          This is your space to write your own letter for Chapter 20. Share a memory from our journey together, a word of advice, a prayer, or birthday wishes. I will be reading every single note long after October 11.
         </p>
       </div>
 
@@ -181,7 +184,7 @@ export function WishSection() {
               htmlFor="wish-message"
               className="block text-xs font-mono uppercase tracking-wider text-muted"
             >
-              Your note <span className="text-accent">*</span>
+              Your letter <span className="text-accent">*</span>
             </label>
             <span
               className={`text-[11px] font-mono ${
@@ -198,7 +201,7 @@ export function WishSection() {
             required
             rows={4}
             maxLength={maxMessageLen}
-            placeholder="A memory, a piece of advice, a prayer, or a birthday wish..."
+            placeholder="Dear samkiel, write your letter, memory, advice, or birthday wish here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors resize-none"
@@ -218,7 +221,7 @@ export function WishSection() {
           ) : (
             <>
               <Send className="w-4 h-4" />
-              <span>Leave note in journal</span>
+              <span>Send letter to samkiel</span>
             </>
           )}
         </button>
