@@ -27,13 +27,29 @@ export default function AdminPage() {
   const [loadingWishes, setLoadingWishes] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
 
+  // Restore saved view preference
+  useEffect(() => {
+    const savedView = localStorage.getItem("samkiel_admin_view");
+    if (savedView === "analytics" || savedView === "letters") {
+      setView(savedView);
+    }
+  }, []);
+
+  const changeView = (newView: "letters" | "analytics") => {
+    setView(newView);
+    try {
+      localStorage.setItem("samkiel_admin_view", newView);
+    } catch {
+      // ignore
+    }
+  };
+
   const checkAuth = async () => {
     try {
-      const res = await fetch("/api/admin/wishes");
+      const res = await fetch("/api/admin/session");
       if (res.ok) {
         setIsAuthenticated(true);
-        const data = await res.json();
-        setWishes(data.wishes);
+        loadWishes();
       } else {
         setIsAuthenticated(false);
       }
@@ -264,7 +280,7 @@ export default function AdminPage() {
         {(["letters", "analytics"] as const).map((v) => (
           <button
             key={v}
-            onClick={() => setView(v)}
+            onClick={() => changeView(v)}
             className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wider cursor-pointer transition-colors ${
               view === v ? "bg-ink text-paper font-semibold" : "text-muted hover:text-ink"
             }`}
