@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { WishResponse } from "@/types/wishes";
+import { AdminAnalytics } from "@/components/admin-analytics";
 import {
   Lock,
   LogOut,
@@ -21,6 +22,7 @@ export default function AdminPage() {
 
   // Dashboard state
   const [wishes, setWishes] = useState<WishResponse[]>([]);
+  const [view, setView] = useState<"letters" | "analytics">("letters");
   const [filter, setFilter] = useState("all");
   const [loadingWishes, setLoadingWishes] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
@@ -257,6 +259,25 @@ export default function AdminPage() {
         </div>
       </div>
 
+      {/* View switcher */}
+      <div className="flex items-center gap-2">
+        {(["letters", "analytics"] as const).map((v) => (
+          <button
+            key={v}
+            onClick={() => setView(v)}
+            className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wider cursor-pointer transition-colors ${
+              view === v ? "bg-ink text-paper font-semibold" : "text-muted hover:text-ink"
+            }`}
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+
+      {view === "analytics" ? (
+        <AdminAnalytics />
+      ) : (
+        <>
       {/* Filter Tabs */}
       <div className="flex items-center gap-2 border-b border-hairline pb-3">
         {["all", "approved", "pending", "hidden"].map((st) => (
@@ -368,6 +389,8 @@ export default function AdminPage() {
           })
         )}
       </div>
+        </>
+      )}
     </div>
   );
 }
