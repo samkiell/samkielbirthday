@@ -26,11 +26,11 @@ export default function HomePage() {
       <ChapterNav />
 
       {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 py-10 md:py-16 space-y-28 md:space-y-40">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 md:pl-16 md:pr-8 lg:pl-20 lg:pr-8 xl:pl-24 xl:pr-8 pt-4 sm:pt-6 md:pt-8 pb-16 md:pb-24 space-y-24 md:space-y-36">
         {/* CHAPTER 01: Hero Section */}
         <section
           id="chapter-01"
-          className="min-h-[80vh] flex flex-col justify-center pt-4 md:pt-10"
+          className="flex flex-col justify-start pt-2 md:pt-4 scroll-mt-24"
         >
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 items-center">
             {/* Left Column: Headlines & CTA */}
@@ -43,9 +43,9 @@ export default function HomePage() {
 
               <div className="space-y-2">
                 <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal tracking-tight text-ink leading-[1.05]">
-                  Another year. <br />
-                  Another{" "}
-                  <span className="italic text-accent">chapter.</span>
+                  Two decades in. <br />
+                  Still{" "}
+                  <span className="italic text-accent">becoming.</span>
                 </h1>
               </div>
 
@@ -99,7 +99,7 @@ export default function HomePage() {
                 {/* Arched Photo Frame */}
                 <div className="relative aspect-[3/4] w-full rounded-t-[160px] sm:rounded-t-[190px] rounded-b-2xl border border-hairline overflow-hidden bg-[#EFEAE1] dark:bg-[#1C1B17] shadow-sm">
                   <Image
-                    src="/pictures/chowdeck%201.jpg"
+                    src="/pictures/whitecaftan.jpg"
                     alt="samkiel portrait for chapter 20"
                     fill
                     priority
@@ -130,7 +130,7 @@ export default function HomePage() {
         {/* Focused Reading Column for Chapters 02 & 03 */}
         <div className="max-w-[680px] mx-auto space-y-28 md:space-y-40">
           {/* CHAPTER 02: The story so far */}
-          <section id="chapter-02" className="space-y-12">
+          <section id="chapter-02" className="space-y-12 scroll-mt-24">
             <div className="space-y-2 border-b border-hairline pb-4">
               <span className="text-xs font-mono tracking-widest uppercase text-muted">
                 Chapter 02
@@ -284,7 +284,7 @@ export default function HomePage() {
           </section>
 
           {/* CHAPTER 03: Things I'm learning */}
-          <section id="chapter-03" className="space-y-12">
+          <section id="chapter-03" className="space-y-12 scroll-mt-24">
             <div className="space-y-2 border-b border-hairline pb-4">
               <span className="text-xs font-mono tracking-widest uppercase text-muted">
                 Chapter 03
@@ -344,7 +344,7 @@ export default function HomePage() {
         </div>
 
         {/* CHAPTER 04: Letters for this chapter */}
-        <section id="chapter-04" className="space-y-10 max-w-4xl mx-auto pt-8">
+        <section id="chapter-04" className="space-y-10 max-w-4xl mx-auto pt-8 scroll-mt-24">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-hairline pb-4">
             <div className="space-y-2">
               <span className="text-xs font-mono tracking-widest uppercase text-muted">
@@ -368,7 +368,7 @@ export default function HomePage() {
 
         {/* CHAPTER 05: The next chapter (Focused Manifesto) */}
         <div className="max-w-[680px] mx-auto space-y-28 md:space-y-40">
-          <section id="chapter-05" className="space-y-12">
+          <section id="chapter-05" className="space-y-12 scroll-mt-24">
             <div className="space-y-2 border-b border-hairline pb-4">
               <span className="text-xs font-mono tracking-widest uppercase text-muted">
                 Chapter 05
@@ -412,7 +412,7 @@ export default function HomePage() {
 
               <div className="pt-8 border-t border-hairline space-y-4">
                 <p className="font-serif italic text-lg sm:text-xl text-ink">
-                  Another year. Another chapter. Let's see what I do with it.
+                  Two decades in. Still becoming. Let's see what I do with it.
                 </p>
                 <button
                   onClick={handleManifestoFinish}
@@ -427,8 +427,8 @@ export default function HomePage() {
 
           {/* Footer */}
           <footer className="pt-16 pb-20 border-t border-hairline text-center space-y-3">
-            <div className="font-mono text-xs uppercase tracking-widest text-ink font-medium">
-              SAMKIEL · Software with Intention
+            <div className="font-mono text-xs tracking-widest text-ink font-medium">
+              <span className="lowercase">samkiel</span> · <span className="uppercase">One push at a time</span>
             </div>
             <div className="text-xs text-muted font-mono flex items-center justify-center gap-3">
               <a
