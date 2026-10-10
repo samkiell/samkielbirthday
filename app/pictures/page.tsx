@@ -15,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Copy,
+  Loader2,
 } from "lucide-react";
 
 interface PictureItem {
@@ -58,6 +59,7 @@ export default function PicturesPage() {
   const [pictures, setPictures] = useState<PictureItem[]>(ALL_PICTURES);
   const [viewMode, setViewMode] = useState<"grid" | "large">("grid");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [sharingId, setSharingId] = useState<string | null>(null);
 
   const activePhoto =
     lightboxIndex !== null ? pictures[lightboxIndex] : null;
@@ -102,27 +104,68 @@ export default function PicturesPage() {
   };
 
   const handleShare = async (pic: PictureItem) => {
-    const shareUrl = `${window.location.origin}/pictures#${pic.id}`;
-    const shareData = {
-      title: `samkiel turns 20 · ${pic.title}`,
-      text: `celebrating samkiel's 20th birthday: two decades in. still dey on motion.`,
-      url: shareUrl,
-    };
+    if (sharingId) return;
+    setSharingId(pic.id);
 
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        return;
-      } catch {
-        // Fallback to clipboard if dismissed
-      }
-    }
+    const shareUrl = `${window.location.origin}/pictures#${pic.id}`;
+    const encodedSrc = `/pictures/${encodeURIComponent(pic.filename)}`;
+    const cleanTitle = pic.title.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
+    const ext = pic.filename.split(".").pop() || "jpg";
+    const mimeType = ext === "png" ? "image/png" : "image/jpeg";
 
     try {
+      // 1. Fetch the actual photo file to share directly into WhatsApp / native apps
+      if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+        let file: File | null = null;
+        try {
+          const res = await fetch(encodedSrc);
+          if (res.ok) {
+            const blob = await res.blob();
+            file = new File([blob], `samkiel-${cleanTitle}.${ext}`, {
+              type: blob.type || mimeType,
+            });
+          }
+        } catch {
+          // If fetch fails, will proceed to URL share fallback
+        }
+
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: `samkiel turns 20 · ${pic.title}`,
+              text: `celebrating samkiel's 20th birthday: two decades in. still dey on motion.\n${shareUrl}`,
+            });
+            return;
+          } catch (shareErr: unknown) {
+            if ((shareErr as { name?: string })?.name === "AbortError") {
+              return; // User canceled the share sheet
+            }
+          }
+        }
+
+        // 2. Fallback to native Web Share with text/URL
+        try {
+          await navigator.share({
+            title: `samkiel turns 20 · ${pic.title}`,
+            text: `celebrating samkiel's 20th birthday: two decades in. still dey on motion.`,
+            url: shareUrl,
+          });
+          return;
+        } catch (shareErr: unknown) {
+          if ((shareErr as { name?: string })?.name === "AbortError") {
+            return; // User canceled
+          }
+        }
+      }
+
+      // 3. Desktop / non-supported browser fallback: copy link
       await navigator.clipboard.writeText(shareUrl);
       toast.success("picture link copied to clipboard");
     } catch {
-      toast.error("could not copy link");
+      toast.error("could not share picture");
+    } finally {
+      setSharingId(null);
     }
   };
 
@@ -310,11 +353,16 @@ export default function PicturesPage() {
                       <button
                         type="button"
                         data-track="picture_share"
+                        disabled={sharingId === pic.id}
                         onClick={() => handleShare(pic)}
-                        className="inline-flex items-center gap-1 text-xs font-mono text-muted hover:text-ink transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1 text-xs font-mono text-muted hover:text-ink transition-colors cursor-pointer disabled:opacity-50"
                       >
-                        <Share2 className="w-3.5 h-3.5" />
-                        <span>share</span>
+                        {sharingId === pic.id ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-accent" />
+                        ) : (
+                          <Share2 className="w-3.5 h-3.5" />
+                        )}
+                        <span>{sharingId === pic.id ? "attaching..." : "share"}</span>
                       </button>
 
                       <a
@@ -448,11 +496,16 @@ export default function PicturesPage() {
             <button
               type="button"
               data-track="picture_share"
+              disabled={sharingId === activePhoto.id}
               onClick={() => handleShare(activePhoto)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer disabled:opacity-50"
             >
-              <Share2 className="w-3.5 h-3.5" />
-              <span>share</span>
+              {sharingId === activePhoto.id ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-accent" />
+              ) : (
+                <Share2 className="w-3.5 h-3.5" />
+              )}
+              <span>{sharingId === activePhoto.id ? "attaching..." : "share"}</span>
             </button>
 
             <a
