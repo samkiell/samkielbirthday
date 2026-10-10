@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./theme-toggle";
@@ -17,7 +17,25 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, progress)));
+      } else {
+        setScrollProgress(0);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
 
   const handleLinkClick = (href: string) => {
     setMobileMenuOpen(false);
@@ -32,6 +50,17 @@ export function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-paper/90 border-b border-hairline transition-colors">
+      {/* Top Scroll Progress Line (visible on all devices) */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[2.5px] bg-transparent pointer-events-none overflow-hidden"
+        aria-hidden="true"
+      >
+        <div
+          className="h-full bg-accent transition-[width] duration-100 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Left: Brand */}
         <Link
