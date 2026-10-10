@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Navbar } from "@/components/navbar";
 import { Toaster } from "sonner";
-import Link from "next/link";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -72,26 +71,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Header navigation bar */}
-          <header className="fixed top-0 left-0 right-0 z-30 backdrop-blur-md bg-paper/85 border-b border-hairline/60">
-            <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-              <Link
-                href="/"
-                className="text-xs font-mono uppercase tracking-widest text-muted hover:text-ink transition-colors"
-              >
-                samkiel.dev
-              </Link>
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/pictures"
-                  className="text-xs font-mono uppercase tracking-wider text-muted hover:text-ink transition-colors"
-                >
-                  Pictures
-                </Link>
-                <ThemeToggle />
-              </div>
-            </div>
-          </header>
+          <Navbar />
 
           <main className="flex-1 pt-14">{children}</main>
 
