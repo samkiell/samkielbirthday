@@ -96,7 +96,7 @@ function WishesPdfDocument({ wishes }: { wishes: Array<{ id: string; name: strin
     <Document>
       {/* Cover Page */}
       <Page size="A4" style={styles.coverPage}>
-        <Text style={styles.coverTitle}>Two Decades In. Still Becoming.</Text>
+        <Text style={styles.coverTitle}>two decades in. still dey on motion.</Text>
         <Text style={styles.coverSub}>Letters for samkiel at Twenty</Text>
         <Text style={styles.coverMeta}>October 11, 2026 · birthday.samkiel.dev</Text>
       </Page>
