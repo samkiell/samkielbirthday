@@ -67,7 +67,7 @@ export async function generateLetterCard(data: LetterCardData): Promise<{ blob: 
   ctx.font = "600 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
   ctx.fillStyle = "#1F4D3A";
   ctx.textBaseline = "middle";
-  ctx.fillText("SAMKIEL · CHAPTER 20", contentLeft, 82);
+  ctx.fillText("samkiel · chapter 20", contentLeft, 82);
 
   // Header Date
   const dateStr = data.createdAt
@@ -150,14 +150,14 @@ export async function generateLetterCard(data: LetterCardData): Promise<{ blob: 
   ctx.font = '600 22px "Fraunces", Georgia, serif';
   ctx.fillStyle = "#17150F";
   ctx.textBaseline = "middle";
-  const authorName = data.name.trim() || "Anonymous";
+  const authorName = data.name.trim() || "anonymous";
   ctx.fillText(authorName, contentLeft, footerY);
 
   const authorWidth = ctx.measureText(authorName).width;
 
   // Relationship Tag (if present)
   if (data.relationship) {
-    const tagText = data.relationship.toUpperCase();
+    const tagText = data.relationship.toLowerCase();
     ctx.font = "600 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
     const tagMetrics = ctx.measureText(tagText);
     const pillWidth = tagMetrics.width + 18;
@@ -236,7 +236,7 @@ export async function shareLetterAsPng(data: LetterCardData): Promise<void> {
   if (typeof navigator !== "undefined" && navigator.canShare && navigator.canShare({ files: [file] })) {
     try {
       await navigator.share({
-        title: `Letter from ${data.name} for samkiel`,
+        title: `letter from ${data.name} for samkiel`,
         text: `"${data.message}" — ${data.name}`,
         files: [file],
       });
