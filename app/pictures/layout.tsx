@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Birthday Pictures",
   description:
-    "A visual archive of the journey into Chapter 20. Twenty years of memories, reflections, and milestones.",
+    "I no go studio at all, cuz i no like the color of the cam wey dem dey use. Twenty years of memories, reflections, and milestones.",
   openGraph: {
     title: "Birthday Pictures · samkiel turns 20",
     description:

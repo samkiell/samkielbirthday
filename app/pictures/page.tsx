@@ -196,7 +196,7 @@ export default function PicturesPage() {
               birthday pictures
             </h1>
             <p className="text-muted text-sm sm:text-base font-serif italic max-w-xl">
-              a visual archive of the journey into chapter 20. tap any photo to view in full screen, download, or share.
+              I no go studio at all, cuz i no like the color of the cam wey dem dey use. tap any photo to view in full screen, download, or share.
             </p>
           </div>
 
