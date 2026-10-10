@@ -417,8 +417,10 @@ export default function HomePage() {
 
               <div className="pt-8 border-t border-hairline space-y-4">
                 <p className="font-serif italic text-lg sm:text-xl text-ink">
-                  another year. another chapter. let's see what i do with it. you've read up 
-                  to this point, omo u don try, 1 api credits for u😹
+                  another year. another chapter. let&apos;s see what i do with it.
+                </p>
+                <p className="text-xs font-mono text-muted">
+                  you&apos;ve read up to this point, omo u don try, 1 api credits for u😹
                 </p>
                 <button
                   onClick={handleManifestoFinish}
