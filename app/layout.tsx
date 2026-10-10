@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
+import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -81,6 +82,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
+          <AnalyticsTracker />
 
           <main className="flex-1 pt-16">{children}</main>
 
