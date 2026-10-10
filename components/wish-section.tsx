@@ -5,7 +5,17 @@ import { toast } from "sonner";
 import { triggerConfetti } from "@/lib/confetti";
 import { RELATIONSHIP_OPTIONS, WishResponse } from "@/types/wishes";
 import Link from "next/link";
-import { Send, Image as ImageIcon, Loader2, Check, PenLine, Download, Share2 } from "lucide-react";
+import {
+  Send,
+  Image as ImageIcon,
+  Loader2,
+  Check,
+  PenLine,
+  Download,
+  Share2,
+  Copy,
+  ExternalLink,
+} from "lucide-react";
 import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generator";
 
 export function WishSection() {
@@ -22,6 +32,7 @@ export function WishSection() {
   const [customRelationship, setCustomRelationship] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [sentSuccess, setSentSuccess] = useState(false);
+  const [createdWish, setCreatedWish] = useState<WishResponse | null>(null);
 
   const maxMessageLen = 280;
 
@@ -105,6 +116,7 @@ export function WishSection() {
       setRelationship("");
       setCustomRelationship("");
       setHoneypot("");
+      setCreatedWish(data);
       setSentSuccess(true);
 
       // Refresh wishes list
@@ -140,14 +152,44 @@ export function WishSection() {
               Letter placed on the wall
             </h4>
             <p className="text-muted text-sm leading-relaxed">
-              Thank you for writing. Your note is now part of Chapter 20 and will be kept in the journal.
+              Thank you for writing. Your note is now part of Chapter 20 and has a unique share link.
             </p>
           </div>
+
+          {createdWish?.code && (
+            <div className="max-w-md mx-auto p-3.5 rounded-xl border border-hairline bg-paper flex items-center justify-between gap-3 text-xs font-mono">
+              <span className="text-muted truncate">
+                /wish/{createdWish.code}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const url = `${window.location.origin}/wish/${createdWish.code}`;
+                    navigator.clipboard.writeText(url);
+                    toast.success("Letter link copied");
+                  }}
+                  className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
+                >
+                  Copy Link
+                </button>
+                <Link
+                  href={`/wish/${createdWish.code}`}
+                  className="px-2.5 py-1 rounded bg-accent text-paper text-[11px] uppercase transition-colors"
+                >
+                  Open Card
+                </Link>
+              </div>
+            </div>
+          )}
 
           <div className="pt-2">
             <button
               type="button"
-              onClick={() => setSentSuccess(false)}
+              onClick={() => {
+                setSentSuccess(false);
+                setCreatedWish(null);
+              }}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-xs"
             >
               <PenLine className="w-3.5 h-3.5 text-accent" />
@@ -332,6 +374,25 @@ export function WishSection() {
                       })}
                     </time>
                     <div className="flex items-center gap-1 border-l border-hairline/60 pl-2">
+                      <Link
+                        href={`/wish/${w.code}`}
+                        title="Open letter page"
+                        className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const url = `${window.location.origin}/wish/${w.code}`;
+                          navigator.clipboard.writeText(url);
+                          toast.success(`Copied /wish/${w.code}`);
+                        }}
+                        title="Copy letter share link"
+                        className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                      </button>
                       <button
                         type="button"
                         onClick={() => downloadLetterAsPng(w)}
