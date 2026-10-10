@@ -25,20 +25,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "samkiel turns 20 · Two Decades In. Still Becoming.",
+  title: "samkiel turns 20 · two decades in. still dey on motion.",
   description:
-    "A personal digital journal for October 11, 2026. Two decades in. Still becoming.",
+    "A personal digital journal for October 11, 2026. two decades in. still dey on motion.",
   openGraph: {
-    title: "samkiel turns 20 · Two Decades In. Still Becoming.",
-    description: "Two decades in. Still becoming. October 11, 2026.",
+    title: "samkiel turns 20 · two decades in. still dey on motion.",
+    description: "two decades in. still dey on motion. October 11, 2026.",
     url: "https://birthday.samkiel.dev",
     siteName: "birthday.samkiel.dev",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "samkiel turns 20 · Two Decades In. Still Becoming.",
-    description: "Two decades in. Still becoming. October 11, 2026.",
+    title: "samkiel turns 20 · two decades in. still dey on motion.",
+    description: "two decades in. still dey on motion. October 11, 2026.",
   },
   icons: {
     icon: [
