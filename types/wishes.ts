@@ -10,6 +10,7 @@ export type RelationshipOption = (typeof RELATIONSHIP_OPTIONS)[number];
 
 export interface WishResponse {
   id: string;
+  code: string;
   name: string;
   message: string;
   relationship?: string;
