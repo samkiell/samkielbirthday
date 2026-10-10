@@ -1,9 +1,9 @@
 export const RELATIONSHIP_OPTIONS = [
-  "Family",
-  "Friend",
-  "Colleague",
-  "Fellow developer",
-  "Other",
+  "family",
+  "friend",
+  "colleague",
+  "fellow developer",
+  "other",
 ] as const;
 
 export type RelationshipOption = (typeof RELATIONSHIP_OPTIONS)[number];
