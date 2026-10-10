@@ -50,7 +50,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Password required" }, { status: 400 });
     }
 
-    const expectedPassword = process.env.ADMIN_PASSWORD || "samkiel2026";
+    const expectedPassword =
+      process.env.ADMIN_PASSWORD ||
+      (process.env.NODE_ENV === "production" ? "" : "dev-password");
+    if (!expectedPassword) {
+      return NextResponse.json({ error: "Admin is not configured" }, { status: 503 });
+    }
 
     if (!safeCompare(password, expectedPassword)) {
       recordFailedAttempt(ip);
