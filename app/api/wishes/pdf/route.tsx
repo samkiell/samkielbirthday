@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getApprovedWishes } from "@/lib/wishes-service";
+import { recordServerEvent } from "@/lib/analytics-service";
 import {
   Document,
   Page,
@@ -131,6 +132,7 @@ function WishesPdfDocument({ wishes }: { wishes: Array<{ id: string; name: strin
 
 export async function GET() {
   try {
+    await recordServerEvent("pdf_download");
     const { wishes } = await getApprovedWishes(1, 100);
     const pdfBuffer = await renderToBuffer(
       <WishesPdfDocument wishes={wishes} />
