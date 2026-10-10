@@ -3,7 +3,7 @@ import { Fraunces, Geist, Geist_Mono, Newsreader, Caveat } from "next/font/googl
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import "./globals.css";
 
