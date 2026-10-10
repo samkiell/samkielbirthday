@@ -26,7 +26,7 @@ export default function HomePage() {
       <ChapterNav />
 
       {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 md:pl-16 md:pr-8 lg:pl-20 lg:pr-8 xl:pl-24 xl:pr-8 pt-1 sm:pt-4 md:pt-8 pb-16 md:pb-24 space-y-20 md:space-y-36">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 md:pl-16 md:pr-8 lg:pl-20 lg:pr-8 xl:pl-24 xl:pr-8 pt-1 sm:pt-4 md:pt-8 pb-0 sm:pb-8 md:pb-24 space-y-20 md:space-y-36">
         {/* CHAPTER 01: Hero Section */}
         <section
           id="chapter-01"
@@ -434,7 +434,7 @@ export default function HomePage() {
           </section>
 
           {/* Footer */}
-          <footer className="pt-16 pb-20 border-t border-hairline text-center space-y-3">
+          <footer className="pt-12 sm:pt-16 pb-4 sm:pb-16 border-t border-hairline text-center space-y-3">
             <div className="font-mono text-xs tracking-widest text-ink font-medium">
               <span className="lowercase">samkiel</span> · <span className="lowercase">One push at a time</span>
             </div>
