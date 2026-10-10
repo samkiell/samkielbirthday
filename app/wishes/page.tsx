@@ -93,12 +93,12 @@ export default function WishesPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        toast.error(data.error || "could not post your letter");
+        toast.error(data.error || "could not post your wish");
         setSubmitting(false);
         return;
       }
 
-      toast.success("thank you. your letter is on the wall.");
+      toast.success("thank you. your wish is on the wall.");
       triggerConfetti();
 
       // Reset
@@ -154,7 +154,7 @@ export default function WishesPage() {
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-colors shadow-2xs"
             >
               <PenLine className="w-3 h-3" />
-              <span>write a letter</span>
+              <span>leave a wish</span>
             </a>
           </div>
         </div>
@@ -163,7 +163,7 @@ export default function WishesPage() {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-accent font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>letters for chapter 20</span>
+              <span>wishes for chapter 20</span>
             </div>
             <h1 className="font-serif text-4xl sm:text-6xl text-ink font-normal">
               the birthday wall
@@ -226,19 +226,19 @@ export default function WishesPage() {
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center space-y-3 text-muted text-xs font-mono">
             <Loader2 className="w-6 h-6 animate-spin text-accent" />
-            <span>gathering letters on the wall...</span>
+            <span>gathering wishes on the wall...</span>
           </div>
         ) : filteredWishes.length === 0 ? (
           <div className="py-24 text-center space-y-4">
             <p className="font-serif italic text-lg text-muted">
-              no letters yet in this section. be the first to leave one below.
+              no wishes yet in this section. be the first to leave one below.
             </p>
             <a
               href="#write"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90"
             >
               <PenLine className="w-3.5 h-3.5" />
-              <span>write the first letter</span>
+              <span>write the first wish</span>
             </a>
           </div>
         ) : viewMode === "floating" ? (
@@ -268,7 +268,7 @@ export default function WishesPage() {
                   {/* Pin mark indicator */}
                   <div className="w-2.5 h-2.5 rounded-full border border-hairline bg-accent/30 mx-auto -mt-2 mb-4 group-hover:bg-accent transition-colors" />
 
-                  <p className="text-ink text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-6 font-serif">
+                  <p className="text-ink text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-6 font-editorial italic">
                     &ldquo;{w.message}&rdquo;
                   </p>
 
@@ -296,7 +296,7 @@ export default function WishesPage() {
                           e.stopPropagation();
                           downloadLetterAsPng(w);
                         }}
-                        title="Download letter as PNG"
+                        title="Download card as PNG"
                         className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
@@ -307,7 +307,7 @@ export default function WishesPage() {
                           e.stopPropagation();
                           shareLetterAsPng(w);
                         }}
-                        title="Share letter"
+                        title="Share wish"
                         className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                       >
                         <Share2 className="w-3.5 h-3.5" />
@@ -327,7 +327,7 @@ export default function WishesPage() {
                 onClick={() => setSelectedWish(w)}
                 className="p-5 rounded-xl border border-hairline bg-paper/70 hover:border-accent transition-all cursor-pointer flex flex-col justify-between gap-4"
               >
-                <p className="text-ink text-sm leading-relaxed whitespace-pre-wrap font-serif">
+                <p className="text-ink text-sm leading-relaxed whitespace-pre-wrap font-editorial italic">
                   &ldquo;{w.message}&rdquo;
                 </p>
 
@@ -357,7 +357,7 @@ export default function WishesPage() {
                         navigator.clipboard.writeText(url);
                         toast.success(`copied /wish/${w.code}`);
                       }}
-                      title="Copy letter share link"
+                      title="Copy wish share link"
                       className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
@@ -368,7 +368,7 @@ export default function WishesPage() {
                         e.stopPropagation();
                         downloadLetterAsPng(w);
                       }}
-                      title="Download letter as PNG"
+                      title="Download card as PNG"
                       className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                     >
                       <Download className="w-3.5 h-3.5" />
@@ -379,7 +379,7 @@ export default function WishesPage() {
                         e.stopPropagation();
                         shareLetterAsPng(w);
                       }}
-                      title="Share letter"
+                      title="Share wish"
                       className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                     >
                       <Share2 className="w-3.5 h-3.5" />
@@ -392,7 +392,7 @@ export default function WishesPage() {
         )}
       </div>
 
-      {/* Write a Letter Form Section */}
+      {/* Write a Birthday Wish Form Section */}
       <section
         id="write"
         className="max-w-2xl mx-auto px-4 sm:px-6 mt-16 pt-12 border-t border-hairline"
@@ -400,10 +400,10 @@ export default function WishesPage() {
         <div className="space-y-3 mb-8 text-center sm:text-left">
           <div className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-accent font-semibold">
             <PenLine className="w-3.5 h-3.5" />
-            <span>your personal message</span>
+            <span>your personal wish</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl text-ink font-normal">
-            write your letter to samkiel
+            send your birthday wish to samkiel
           </h2>
           <p className="text-muted text-sm leading-relaxed">
             write your own words, a memory from our days together, words of advice, a prayer, or birthday wishes. it will be preserved on this wall.
@@ -418,10 +418,10 @@ export default function WishesPage() {
 
             <div className="space-y-2 max-w-md mx-auto">
               <h3 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
-                letter placed on the wall
+                thanks for the wishes!
               </h3>
               <p className="text-muted text-sm leading-relaxed">
-                thank you for contributing to chapter 20. your note is now preserved and has a unique share link.
+                thank you for contributing to chapter 20. your wish is now preserved and has a unique share link.
               </p>
             </div>
 
@@ -436,7 +436,7 @@ export default function WishesPage() {
                     onClick={() => {
                       const url = `${window.location.origin}/wish/${createdWish.code}`;
                       navigator.clipboard.writeText(url);
-                      toast.success("letter link copied");
+                      toast.success("wish link copied");
                     }}
                     className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
                   >
@@ -462,7 +462,7 @@ export default function WishesPage() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-xs"
               >
                 <PenLine className="w-3.5 h-3.5 text-accent" />
-                <span>send another letter</span>
+                <span>send another wish</span>
               </button>
             </div>
           </div>
@@ -548,10 +548,10 @@ export default function WishesPage() {
           <div className="space-y-1.5">
             <div className="flex justify-between items-center">
               <label
-                htmlFor="letter-content"
+                htmlFor="wish-content"
                 className="block text-xs font-mono uppercase tracking-wider text-muted"
               >
-                your letter <span className="text-accent">*</span>
+                your wish <span className="text-accent">*</span>
               </label>
               <span
                 className={`text-[11px] font-mono ${
@@ -562,11 +562,11 @@ export default function WishesPage() {
               </span>
             </div>
             <textarea
-              id="letter-content"
+              id="wish-content"
               required
               rows={4}
               maxLength={maxMessageLen}
-              placeholder="dear samkiel, write your letter, memory, advice, or birthday wish here..."
+              placeholder="dear samkiel, write your birthday wish, memory, advice, or prayer here..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors resize-none"
@@ -586,7 +586,7 @@ export default function WishesPage() {
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>place letter on wall</span>
+                <span>place wish on wall</span>
               </>
             )}
           </button>
@@ -594,7 +594,7 @@ export default function WishesPage() {
         )}
       </section>
 
-      {/* Expanded Letter Reader Modal */}
+      {/* Expanded Wish Reader Modal */}
       {selectedWish && (
         <div
           role="dialog"
@@ -617,14 +617,14 @@ export default function WishesPage() {
               <button
                 type="button"
                 onClick={() => setSelectedWish(null)}
-                aria-label="Close letter"
+                aria-label="Close wish"
                 className="p-1.5 rounded-full hover:bg-hairline/40 text-muted hover:text-ink transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="font-serif text-base sm:text-lg text-ink/90 leading-relaxed whitespace-pre-wrap italic">
+            <p className="font-editorial text-base sm:text-xl text-ink/90 leading-relaxed whitespace-pre-wrap italic">
               &ldquo;{selectedWish.message}&rdquo;
             </p>
 
@@ -639,7 +639,7 @@ export default function WishesPage() {
                   onClick={() => {
                     const url = `${window.location.origin}/wish/${selectedWish.code}`;
                     navigator.clipboard.writeText(url);
-                    toast.success("letter link copied");
+                    toast.success("wish link copied");
                   }}
                   className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
                 >
@@ -656,7 +656,7 @@ export default function WishesPage() {
 
             <div className="pt-4 border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
               <div className="text-muted">
-                <span>letter for chapter 20 · </span>
+                <span>wish for chapter 20 · </span>
                 <time dateTime={selectedWish.createdAt}>
                   {new Date(selectedWish.createdAt).toLocaleDateString("en-US", {
                     month: "long",
@@ -671,17 +671,17 @@ export default function WishesPage() {
                   type="button"
                   onClick={() => downloadLetterAsPng(selectedWish)}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-2xs"
-                  title="Download letter as PNG"
+                  title="Download card as PNG"
                 >
                   <Download className="w-3.5 h-3.5 text-accent" />
-                  <span>download png</span>
+                  <span>download card</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => shareLetterAsPng(selectedWish)}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-all cursor-pointer shadow-2xs"
-                  title="Share letter image"
+                  title="Share wish card"
                 >
                   <Share2 className="w-3.5 h-3.5" />
                   <span>share</span>
