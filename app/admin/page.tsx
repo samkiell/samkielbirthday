@@ -240,7 +240,7 @@ export default function AdminPage() {
 
   // Dashboard view
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 space-y-8">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-12 space-y-6 sm:space-y-8">
       {/* Top bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-hairline pb-4">
         <div className="space-y-1">
