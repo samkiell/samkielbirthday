@@ -17,6 +17,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generator";
+import { formatWishDateTime } from "@/lib/format-date";
 
 export function WishSection() {
   const [wishes, setWishes] = useState<WishResponse[]>([]);
@@ -367,11 +368,8 @@ export function WishSection() {
                     )}
                   </div>
                   <div className="flex items-center gap-3">
-                    <time dateTime={w.createdAt}>
-                      {new Date(w.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
+                    <time dateTime={w.createdAt} suppressHydrationWarning>
+                      {formatWishDateTime(w.createdAt, { short: true })}
                     </time>
                     <div className="flex items-center gap-1 border-l border-hairline/60 pl-2">
                       <Link
