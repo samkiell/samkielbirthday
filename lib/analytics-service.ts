@@ -439,5 +439,148 @@ export async function getLiveStats() {
   };
 }
 
+export interface PaginatedEventsOptions {
+  page?: number;
+  limit?: number;
+  type?: string;
+  search?: string;
+}
+
+export interface DetailedEventItem {
+  id: string;
+  ts: number;
+  type: EventType;
+  sid: string;
+  vid?: string;
+  path: string;
+  ref?: string;
+  country?: string;
+  city?: string;
+  device: string;
+  browser: string;
+  os: string;
+  chapter?: string;
+  depth?: number;
+  label?: string;
+}
+
+export async function getPaginatedEvents(options: PaginatedEventsOptions = {}) {
+  const page = Math.max(1, Number(options.page) || 1);
+  const limit = Math.min(100, Math.max(5, Number(options.limit) || 25));
+  const skip = (page - 1) * limit;
+
+  // Build filter query
+  const query: any = {};
+  if (options.type && options.type !== "all") {
+    query.type = options.type;
+  } else {
+    // Default stream hides repetitive background pings and raw scroll ticks
+    query.type = { $nin: ["ping", "scroll"] };
+  }
+
+  if (options.search && options.search.trim()) {
+    const s = options.search.trim();
+    query.$or = [
+      { path: { $regex: s, $options: "i" } },
+      { label: { $regex: s, $options: "i" } },
+      { city: { $regex: s, $options: "i" } },
+      { country: { $regex: s, $options: "i" } },
+      { sid: { $regex: s, $options: "i" } },
+      { browser: { $regex: s, $options: "i" } },
+      { os: { $regex: s, $options: "i" } },
+      { device: { $regex: s, $options: "i" } },
+    ];
+  }
+
+  const c = await getCollection();
+  let events: DetailedEventItem[] = [];
+  let total = 0;
+
+  if (c) {
+    try {
+      total = await c.countDocuments(query);
+      const docs = await c
+        .find(query)
+        .sort({ ts: -1 })
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+
+      events = docs.map((e, idx) => ({
+        id: (e as any)._id?.toString() || `${e.sid}-${e.ts.getTime()}-${idx}`,
+        ts: e.ts.getTime(),
+        type: e.type,
+        sid: e.sid,
+        vid: e.vid,
+        path: e.path,
+        ref: e.ref,
+        country: e.country,
+        city: e.city,
+        device: e.device,
+        browser: e.browser,
+        os: e.os,
+        chapter: e.chapter,
+        depth: e.depth,
+        label: e.label,
+      }));
+    } catch (err) {
+      console.error("Paginated events query error:", err);
+    }
+  }
+
+  if (events.length === 0 && memory.length > 0) {
+    let filtered = memory.filter((e) =>
+      options.type && options.type !== "all"
+        ? e.type === options.type
+        : !["ping", "scroll"].includes(e.type)
+    );
+    if (options.search && options.search.trim()) {
+      const s = options.search.trim().toLowerCase();
+      filtered = filtered.filter(
+        (e) =>
+          e.path.toLowerCase().includes(s) ||
+          e.label?.toLowerCase().includes(s) ||
+          e.city?.toLowerCase().includes(s) ||
+          e.country?.toLowerCase().includes(s) ||
+          e.sid.toLowerCase().includes(s)
+      );
+    }
+    total = filtered.length;
+    events = filtered
+      .slice()
+      .reverse()
+      .slice(skip, skip + limit)
+      .map((e, idx) => ({
+        id: `${e.sid}-${e.ts.getTime()}-${idx}`,
+        ts: e.ts.getTime(),
+        type: e.type,
+        sid: e.sid,
+        vid: e.vid,
+        path: e.path,
+        ref: e.ref,
+        country: e.country,
+        city: e.city,
+        device: e.device,
+        browser: e.browser,
+        os: e.os,
+        chapter: e.chapter,
+        depth: e.depth,
+        label: e.label,
+      }));
+  }
+
+  const live = await getLiveStats();
+
+  return {
+    events,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit) || 1,
+    liveNow: live.liveNow,
+  };
+}
+
+export type PaginatedEventsResponse = Awaited<ReturnType<typeof getPaginatedEvents>>;
 export type LiveStatsReport = Awaited<ReturnType<typeof getLiveStats>>;
 export type AnalyticsReport = Awaited<ReturnType<typeof getAnalytics>>;
