@@ -136,7 +136,7 @@ export default function WishesPage() {
         });
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen pb-12 sm:pb-24">
       {/* Top Banner / Header */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-8 space-y-6 border-b border-hairline">
         <div className="flex items-center justify-between">
