@@ -281,7 +281,7 @@ export default function HomePage() {
                   nowhere close. my first laptop also got fried when lightning
                   struck while it was charging in my hostel. the charging ic died
                   and i used it plugged in for a long time. what pulls me back is
-                  seeing the people around me building.
+                  seeing the people around me building, mehn that thing dey always pump me up to get back building.
                 </p>
               </article>
             </div>
