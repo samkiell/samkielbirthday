@@ -15,6 +15,7 @@ import {
   Share2,
   Copy,
   ExternalLink,
+  ArrowRight,
 } from "lucide-react";
 import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generator";
 import { formatWishDateTime } from "@/lib/format-date";
@@ -22,10 +23,8 @@ import { formatWishDateTime } from "@/lib/format-date";
 export function WishSection() {
   const [wishes, setWishes] = useState<WishResponse[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
 
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -37,30 +36,23 @@ export function WishSection() {
 
   const maxMessageLen = 280;
 
-  const fetchWishes = async (pageNum = 1, append = false) => {
+  const fetchWishes = async () => {
     try {
-      if (append) setLoadingMore(true);
-      const res = await fetch(`/api/wishes?page=${pageNum}&limit=12`);
+      const res = await fetch(`/api/wishes?page=1&limit=4`);
       if (res.ok) {
         const data = await res.json();
-        if (append) {
-          setWishes((prev) => [...prev, ...data.wishes]);
-        } else {
-          setWishes(data.wishes);
-        }
+        setWishes(data.wishes.slice(0, 4));
         setTotal(data.total);
-        setPage(pageNum);
       }
     } catch (err) {
       console.error("Error loading wishes:", err);
     } finally {
       setLoading(false);
-      setLoadingMore(false);
     }
   };
 
   useEffect(() => {
-    fetchWishes(1, false);
+    fetchWishes();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -121,7 +113,7 @@ export function WishSection() {
       setSentSuccess(true);
 
       // Refresh wishes list
-      fetchWishes(1, false);
+      fetchWishes();
     } catch {
       toast.error("network error, try again");
     } finally {
@@ -328,13 +320,22 @@ export function WishSection() {
         </form>
       )}
 
-      {/* Wishes Wall */}
+      {/* Wishes Wall (Latest 4) */}
       <div className="space-y-6">
         <div className="flex items-center justify-between border-b border-hairline pb-3">
-          <h3 className="font-serif text-lg text-ink">wishes on the wall</h3>
-          <span className="text-xs font-mono text-muted">
-            {total} {total === 1 ? "wish" : "wishes"}
-          </span>
+          <div className="space-y-0.5">
+            <h3 className="font-serif text-lg text-ink">latest wishes</h3>
+            <p className="text-[11px] font-mono text-muted">
+              showing latest 4 notes · see more on the wish wall
+            </p>
+          </div>
+          <Link
+            href="/wishes"
+            className="text-xs font-mono text-accent hover:underline inline-flex items-center gap-1 font-medium"
+          >
+            <span>view full wall ({total})</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
         {loading ? (
@@ -347,7 +348,7 @@ export function WishSection() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {wishes.map((w) => (
+            {wishes.slice(0, 4).map((w) => (
               <article
                 key={w.id}
                 className="p-5 rounded-lg border border-hairline bg-paper/70 flex flex-col justify-between gap-4 transition-all hover:border-accent/40"
@@ -415,22 +416,20 @@ export function WishSection() {
           </div>
         )}
 
-        {/* Load more button */}
-        {wishes.length < total && (
-          <div className="pt-4 flex justify-center">
-            <button
-              onClick={() => fetchWishes(page + 1, true)}
-              disabled={loadingMore}
-              className="px-5 py-2 rounded-lg border border-hairline text-xs font-mono uppercase tracking-wider text-muted hover:text-ink hover:border-ink transition-colors cursor-pointer"
-            >
-              {loadingMore ? "loading more..." : "load more"}
-            </button>
-          </div>
-        )}
+        {/* View all on wish wall button */}
+        <div className="pt-3 flex justify-center">
+          <Link
+            href="/wishes"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl border border-hairline bg-paper text-xs font-mono uppercase tracking-wider text-ink hover:border-accent hover:bg-black/5 dark:hover:bg-white/5 transition-all shadow-2xs group"
+          >
+            <span>see all wishes on the wall ({total})</span>
+            <ArrowRight className="w-3.5 h-3.5 text-accent transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
       </div>
 
       {/* Links under the wall */}
-      <div className="pt-8 border-t border-hairline flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+      <div className="pt-6 border-t border-hairline flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
         <Link
           href="/pictures"
           className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors"
@@ -441,9 +440,9 @@ export function WishSection() {
 
         <Link
           href="/wishes"
-          className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors"
+          className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
         >
-          <span>open full wall →</span>
+          <span>open full wish wall ({total}) →</span>
         </Link>
       </div>
     </div>
