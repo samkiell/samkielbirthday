@@ -75,31 +75,8 @@ export interface WishDocument {
 }
 export type { WishResponse };
 
-// In-memory fallback if MONGODB_URI is not set during initial testing
-const memoryWishes: WishDocument[] = [
-  {
-    _id: "seed-1",
-    code: "ghry",
-    name: "A friend",
-    message:
-      "Happy 20th birthday samkiel. Keep building with intention. Watching your journey from the button phone days to now is inspiring.",
-    relationship: "friend",
-    status: "approved",
-    createdAt: new Date("2026-10-10T08:00:00Z"),
-    ipHash: "seed",
-  },
-  {
-    _id: "seed-2",
-    code: "kiel",
-    name: "Fellow Dev",
-    message:
-      "Happy birthday bro. Excited for what chapter 20 brings for you and your startup. Keep raising the bar.",
-    relationship: "fellow developer",
-    status: "approved",
-    createdAt: new Date("2026-10-10T10:30:00Z"),
-    ipHash: "seed",
-  },
-];
+// In-memory fallback (empty - only real wishes submitted by users are stored and shown)
+const memoryWishes: WishDocument[] = [];
 
 // In-memory rate limiting map
 const ipRateLimits = new Map<string, number[]>();
