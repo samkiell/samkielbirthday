@@ -24,29 +24,29 @@ interface PictureItem {
 }
 
 const ALL_PICTURES: PictureItem[] = [
-  { id: "pic-01", filename: "samkielbday01.jpg", title: "Two decades in portrait" },
-  { id: "pic-02", filename: "samkielbday02.jpg", title: "Chapter 20 portrait" },
-  { id: "pic-03", filename: "samkielbday03.jpg", title: "Reflections" },
-  { id: "pic-04", filename: "samkielbday04.jpg", title: "Still becoming" },
-  { id: "pic-05", filename: "samkielbday05.jpg", title: "Growth" },
-  { id: "pic-06", filename: "samkielbday06.jpg", title: "On campus" },
-  { id: "pic-07", filename: "samkielbday07.jpg", title: "Quiet focus" },
-  { id: "pic-08", filename: "samkielbday08.jpg", title: "Moments" },
-  { id: "pic-09", filename: "samkielbday09.jpg", title: "Memories" },
-  { id: "pic-10", filename: "samkielbday10.jpg", title: "Dev community & events" },
-  { id: "pic-11", filename: "samkielbday11.jpg", title: "CS conference" },
-  { id: "pic-12", filename: "samkielbday12.jpg", title: "GDG web sessions" },
-  { id: "pic-13", filename: "samkielbday13.jpg", title: "Hackathon & building" },
-  { id: "pic-14", filename: "samkielbday14.jpg", title: "Collaborating" },
-  { id: "pic-15", filename: "samkielbday15.jpg", title: "Community spaces" },
-  { id: "pic-16", filename: "samkielbday16.jpg", title: "Milestones" },
-  { id: "pic-17", filename: "samkielbday17.jpg", title: "Walks & talks" },
-  { id: "pic-18", filename: "samkielbday18.jpg", title: "Late night coding" },
-  { id: "pic-19", filename: "samkielbday19.jpg", title: "Building momentum" },
-  { id: "pic-20", filename: "samkielbday20.jpg", title: "Flashback" },
-  { id: "pic-21", filename: "samkielbday21.png", title: "Milestone moment" },
-  { id: "pic-22", filename: "samkielbday22.jpg", title: "Casual memories" },
-  { id: "pic-23", filename: "samkielbday23.jpg", title: "Smiles along the way" },
+  { id: "pic-01", filename: "samkielbday01.jpg", title: "two decades in portrait" },
+  { id: "pic-02", filename: "samkielbday02.jpg", title: "chapter 20 portrait" },
+  { id: "pic-03", filename: "samkielbday03.jpg", title: "reflections" },
+  { id: "pic-04", filename: "samkielbday04.jpg", title: "still becoming" },
+  { id: "pic-05", filename: "samkielbday05.jpg", title: "growth" },
+  { id: "pic-06", filename: "samkielbday06.jpg", title: "on campus" },
+  { id: "pic-07", filename: "samkielbday07.jpg", title: "quiet focus" },
+  { id: "pic-08", filename: "samkielbday08.jpg", title: "moments" },
+  { id: "pic-09", filename: "samkielbday09.jpg", title: "memories" },
+  { id: "pic-10", filename: "samkielbday10.jpg", title: "dev community & events" },
+  { id: "pic-11", filename: "samkielbday11.jpg", title: "cs conference" },
+  { id: "pic-12", filename: "samkielbday12.jpg", title: "gdg web sessions" },
+  { id: "pic-13", filename: "samkielbday13.jpg", title: "hackathon & building" },
+  { id: "pic-14", filename: "samkielbday14.jpg", title: "collaborating" },
+  { id: "pic-15", filename: "samkielbday15.jpg", title: "community spaces" },
+  { id: "pic-16", filename: "samkielbday16.jpg", title: "milestones" },
+  { id: "pic-17", filename: "samkielbday17.jpg", title: "walks & talks" },
+  { id: "pic-18", filename: "samkielbday18.jpg", title: "late night coding" },
+  { id: "pic-19", filename: "samkielbday19.jpg", title: "building momentum" },
+  { id: "pic-20", filename: "samkielbday20.jpg", title: "flashback" },
+  { id: "pic-21", filename: "samkielbday21.png", title: "milestone moment" },
+  { id: "pic-22", filename: "samkielbday22.jpg", title: "casual memories" },
+  { id: "pic-23", filename: "samkielbday23.jpg", title: "smiles along the way" },
 ];
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -94,7 +94,7 @@ export default function PicturesPage() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      toast.success("Picture downloaded");
+      toast.success("picture downloaded");
     } catch {
       const a = document.createElement("a");
       a.href = `/pictures/${encodeURIComponent(filename)}`;
@@ -109,7 +109,7 @@ export default function PicturesPage() {
     const shareUrl = `${window.location.origin}/pictures#${pic.id}`;
     const shareData = {
       title: `samkiel turns 20 · ${pic.title}`,
-      text: `Celebrating samkiel's 20th birthday: two decades in. still dey on motion.`,
+      text: `celebrating samkiel's 20th birthday: two decades in. still dey on motion.`,
       url: shareUrl,
     };
 
@@ -124,21 +124,21 @@ export default function PicturesPage() {
 
     try {
       await navigator.clipboard.writeText(shareUrl);
-      toast.success("Picture link copied to clipboard");
+      toast.success("picture link copied to clipboard");
     } catch {
-      toast.error("Could not copy link");
+      toast.error("could not copy link");
     }
   };
 
   const handleCopyLink = (pic: PictureItem) => {
     const shareUrl = `${window.location.origin}/pictures#${pic.id}`;
     navigator.clipboard.writeText(shareUrl);
-    toast.success("Link copied to clipboard");
+    toast.success("link copied to clipboard");
   };
 
   const getWhatsAppLink = (pic: PictureItem) => {
     const text = encodeURIComponent(
-      `Celebrating samkiel's 20th birthday! Check out this picture: https://birthday.samkiel.dev/pictures#${pic.id}`
+      `celebrating samkiel's 20th birthday! check out this picture: https://birthday.samkiel.dev/pictures#${pic.id}`
     );
     return `https://wa.me/?text=${text}`;
   };
@@ -191,16 +191,16 @@ export default function PicturesPage() {
           className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted hover:text-ink transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to journal</span>
+          <span>back to journal</span>
         </Link>
 
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div className="space-y-2">
             <h1 className="font-serif text-3xl sm:text-5xl font-normal text-ink">
-              Birthday Pictures
+              birthday pictures
             </h1>
             <p className="text-muted text-sm sm:text-base font-serif italic max-w-xl">
-              A visual archive of the journey into Chapter 20. Tap any photo to view in full screen, download, or share.
+              a visual archive of the journey into chapter 20. tap any photo to view in full screen, download, or share.
             </p>
           </div>
 
@@ -218,7 +218,7 @@ export default function PicturesPage() {
                 }`}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
-                <span>Grid</span>
+                <span>grid</span>
               </button>
               <button
                 type="button"
@@ -230,7 +230,7 @@ export default function PicturesPage() {
                 }`}
               >
                 <Square className="w-3.5 h-3.5" />
-                <span>Large</span>
+                <span>large</span>
               </button>
             </div>
           </div>
@@ -307,7 +307,7 @@ export default function PicturesPage() {
                       className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-ink transition-colors cursor-pointer"
                     >
                       <Download className="w-3.5 h-3.5" />
-                      <span>Download</span>
+                      <span>download</span>
                     </button>
 
                     <div className="flex items-center gap-3">
@@ -318,7 +318,7 @@ export default function PicturesPage() {
                         className="inline-flex items-center gap-1 text-xs font-mono text-muted hover:text-ink transition-colors cursor-pointer"
                       >
                         <Share2 className="w-3.5 h-3.5" />
-                        <span>Share</span>
+                        <span>share</span>
                       </button>
 
                       <a
@@ -328,7 +328,7 @@ export default function PicturesPage() {
                         className="inline-flex items-center gap-1 text-xs font-mono text-muted hover:text-[#25D366] transition-colors"
                       >
                         <MessageCircle className="w-3.5 h-3.5" />
-                        <span>WhatsApp</span>
+                        <span>whatsapp</span>
                       </a>
                     </div>
                   </div>
@@ -371,7 +371,7 @@ export default function PicturesPage() {
                 title="Download photo"
               >
                 <Download className="w-3.5 h-3.5 text-accent" />
-                <span className="hidden sm:inline">Download</span>
+                <span className="hidden sm:inline">download</span>
               </button>
 
               {/* Prominent Close X Button */}
@@ -446,7 +446,7 @@ export default function PicturesPage() {
               className="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5 text-accent" />
-              <span>Download</span>
+              <span>download</span>
             </button>
 
             <button
@@ -456,7 +456,7 @@ export default function PicturesPage() {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span>Share</span>
+              <span>share</span>
             </button>
 
             <a
@@ -466,7 +466,7 @@ export default function PicturesPage() {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#4ADE80] transition-colors"
             >
               <MessageCircle className="w-3.5 h-3.5" />
-              <span>WhatsApp</span>
+              <span>whatsapp</span>
             </a>
 
             <button
@@ -476,7 +476,7 @@ export default function PicturesPage() {
               title="Copy photo link"
             >
               <Copy className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Copy Link</span>
+              <span className="hidden sm:inline">copy link</span>
             </button>
           </div>
         </div>
