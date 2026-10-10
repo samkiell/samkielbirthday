@@ -59,7 +59,7 @@ export default function PicturesPage() {
     const shareUrl = `${window.location.origin}/pictures#${pic.id}`;
     const shareData = {
       title: `samkiel turns 20 · ${pic.title}`,
-      text: `Celebrating samkiel's 20th birthday: Another Year. Another Chapter.`,
+      text: `Celebrating samkiel's 20th birthday: Two Decades In. Still Becoming.`,
       url: shareUrl,
     };
 
