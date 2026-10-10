@@ -52,10 +52,25 @@ export const metadata: Metadata = {
     siteName: "samkiel at 20",
     images: [
       {
-        url: "/pictures/samkielbday01.jpg",
-        width: 1200,
-        height: 1500,
+        url: "https://birthday.samkiel.dev/og-portrait.jpg",
+        width: 1080,
+        height: 1350,
+        type: "image/jpeg",
         alt: "samkiel - Chapter 20 portrait",
+      },
+      {
+        url: "https://birthday.samkiel.dev/og-square.jpg",
+        width: 1000,
+        height: 1000,
+        type: "image/jpeg",
+        alt: "samkiel - Chapter 20 square portrait",
+      },
+      {
+        url: "https://birthday.samkiel.dev/og-landscape.jpg",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
+        alt: "samkiel - Chapter 20 landscape",
       },
     ],
     locale: "en_US",
@@ -65,7 +80,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "samkiel turns 20 · two decades in. still dey on motion.",
     description: "two decades in. still dey on motion. October 11, 2026.",
-    images: ["/pictures/samkielbday01.jpg"],
+    images: ["https://birthday.samkiel.dev/og-portrait.jpg"],
     creator: "@samkiel",
   },
   icons: {
