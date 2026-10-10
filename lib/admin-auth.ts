@@ -4,8 +4,11 @@ import { cookies } from "next/headers";
 export const ADMIN_COOKIE_NAME = "samkiel_admin_token";
 
 function getSecretKey() {
-  const secret = process.env.ADMIN_JWT_SECRET || "samkiel_default_development_secret_key_32chars";
-  return new TextEncoder().encode(secret);
+  const secret = process.env.ADMIN_JWT_SECRET;
+  if (!secret && process.env.NODE_ENV === "production") {
+    throw new Error("ADMIN_JWT_SECRET is not set");
+  }
+  return new TextEncoder().encode(secret || "dev-only-secret-not-for-production-use");
 }
 
 export async function createAdminToken(): Promise<string> {
