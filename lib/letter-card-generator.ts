@@ -1,4 +1,5 @@
 export interface LetterCardData {
+  code?: string;
   name: string;
   message: string;
   relationship?: string;
@@ -186,7 +187,10 @@ export async function generateLetterCard(data: LetterCardData): Promise<{ blob: 
   ctx.font = "400 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
   ctx.fillStyle = "#6B665C";
   ctx.textAlign = "right";
-  ctx.fillText("birthday.samkiel.dev", contentRight, footerY);
+  const footerUrl = data.code
+    ? `birthday.samkiel.dev/wish/${data.code}`
+    : "birthday.samkiel.dev";
+  ctx.fillText(footerUrl, contentRight, footerY);
   ctx.textAlign = "left";
 
   return new Promise((resolve, reject) => {
