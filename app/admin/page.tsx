@@ -328,8 +328,17 @@ export default function AdminPage() {
                         </span>
                       )}
                     </div>
-                    <div className="text-[11px] font-mono text-muted">
-                      {new Date(w.createdAt).toLocaleString()}
+                    <div className="flex items-center gap-2 text-[11px] font-mono text-muted">
+                      <span>{new Date(w.createdAt).toLocaleString()}</span>
+                      <span>·</span>
+                      <a
+                        href={`/wish/${w.code}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-accent hover:underline"
+                      >
+                        /wish/{w.code}
+                      </a>
                     </div>
                   </div>
 
