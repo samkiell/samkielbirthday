@@ -77,7 +77,7 @@ export default function HomePage() {
 
             {/* Right Column: Arched Portrait Photo + Chapter 20 Badge */}
             <div className="md:col-span-5 order-1 md:order-2 flex justify-center md:justify-end relative">
-              <div className="relative w-[190px] xs:w-[220px] sm:w-[280px] md:w-[320px] lg:w-[340px]">
+              <div className="relative w-[225px] xs:w-[250px] sm:w-[280px] md:w-[320px] lg:w-[340px]">
                 {/* Botanical leaf decorations */}
                 <svg
                   className="absolute -top-8 -left-8 w-24 h-24 text-accent/25 pointer-events-none -rotate-12 hidden sm:block"
@@ -100,18 +100,18 @@ export default function HomePage() {
                 </svg>
 
                 {/* Arched Photo Frame */}
-                <div className="relative aspect-[3/4] w-full rounded-t-[100px] xs:rounded-t-[120px] sm:rounded-t-[160px] md:rounded-t-[190px] rounded-b-2xl border border-hairline overflow-hidden bg-[#EFEAE1] dark:bg-[#1C1B17] shadow-sm">
+                <div className="relative aspect-[3/4] w-full rounded-t-[115px] xs:rounded-t-[125px] sm:rounded-t-[160px] md:rounded-t-[190px] rounded-b-2xl border border-hairline overflow-hidden bg-[#EFEAE1] dark:bg-[#1C1B17] shadow-sm">
                   <Image
                     src="/pictures/samkielbday01.jpg"
                     alt="samkiel portrait for chapter 20"
                     fill
                     priority
                     quality={95}
-                    sizes="(max-width: 640px) 240px, (max-width: 1024px) 340px, 420px"
+                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 340px, 420px"
                     className="object-cover object-top"
                   />
                   {/* Subtle inner border */}
-                  <div className="absolute inset-0 rounded-t-[100px] xs:rounded-t-[120px] sm:rounded-t-[160px] md:rounded-t-[190px] rounded-b-2xl ring-1 ring-inset ring-black/5 dark:ring-white/10 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-t-[115px] xs:rounded-t-[125px] sm:rounded-t-[160px] md:rounded-t-[190px] rounded-b-2xl ring-1 ring-inset ring-black/5 dark:ring-white/10 pointer-events-none" />
                 </div>
 
                 {/* Floating Chapter 20 Badge */}
