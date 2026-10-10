@@ -17,7 +17,9 @@ export const wishInputSchema = z.object({
     .min(1, "Message is required")
     .max(280, "Message must be 280 characters or fewer"),
   relationship: z
-    .enum(RELATIONSHIP_OPTIONS)
+    .string()
+    .trim()
+    .max(50, "Relationship must be 50 characters or fewer")
     .optional()
     .or(z.literal("").transform(() => undefined)),
   honeypot: z.string().max(0, "Bot detected").optional(),
