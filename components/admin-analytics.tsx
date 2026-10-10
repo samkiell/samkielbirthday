@@ -327,21 +327,21 @@ export function AdminAnalytics() {
   const withMinutes = data ? data.bucketMs < 3600e3 : false;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Top Main Navigation Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline pb-4">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-hairline pb-4">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           {/* Stream vs Overview Tab Pills */}
           <button
             type="button"
             onClick={() => setActiveTab("stream")}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
               activeTab === "stream"
                 ? "bg-accent text-paper font-semibold shadow-2xs"
                 : "border border-hairline bg-paper/60 text-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/5"
             }`}
           >
-            <Radio className="w-3.5 h-3.5" />
+            <Radio className="w-3.5 h-3.5 shrink-0" />
             <span>Live Stream</span>
             <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 dark:bg-white/20">
               {liveVisitorsCount}
@@ -351,19 +351,19 @@ export function AdminAnalytics() {
           <button
             type="button"
             onClick={() => setActiveTab("overview")}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
               activeTab === "overview"
                 ? "bg-accent text-paper font-semibold shadow-2xs"
                 : "border border-hairline bg-paper/60 text-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/5"
             }`}
           >
-            <BarChart3 className="w-3.5 h-3.5" />
-            <span>Overview & Charts</span>
+            <BarChart3 className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">Overview</span>
           </button>
         </div>
 
         {/* Global Live Pulse indicator */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-mono">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -390,10 +390,10 @@ export function AdminAnalytics() {
       {/* VIEW 1: ELABORATED LIVE STREAM CONSOLE                                    */}
       {/* ========================================================================= */}
       {activeTab === "stream" && (
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {/* Stream Header & Filter Controls Bar */}
-          <div className="p-4 sm:p-5 rounded-2xl border border-hairline bg-paper/80 backdrop-blur-xs space-y-4 shadow-2xs">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="p-3.5 sm:p-5 rounded-2xl border border-hairline bg-paper/80 backdrop-blur-xs space-y-3.5 sm:space-y-4 shadow-2xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <h3 className="font-serif text-lg text-ink font-medium">
                   elaborated live event stream
@@ -404,11 +404,11 @@ export function AdminAnalytics() {
               </div>
 
               {/* Stream Settings: Auto-refresh & Rows */}
-              <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+              <div className="flex flex-wrap items-center justify-between sm:justify-start gap-2 text-xs font-mono">
                 <button
                   type="button"
                   onClick={() => setAutoRefresh(!autoRefresh)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
                     autoRefresh
                       ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                       : "border-hairline text-muted hover:text-ink"
@@ -419,11 +419,11 @@ export function AdminAnalytics() {
                       autoRefresh ? "bg-emerald-500 animate-pulse" : "bg-muted"
                     }`}
                   />
-                  <span>auto-stream: {autoRefresh ? "on (3s)" : "paused"}</span>
+                  <span>auto: {autoRefresh ? "on (3s)" : "paused"}</span>
                 </button>
 
                 <div className="flex items-center gap-1 pl-2 border-l border-hairline text-muted">
-                  <span className="text-[10px] uppercase">show:</span>
+                  <span className="text-[10px] uppercase">rows:</span>
                   {[15, 25, 50, 100].map((num) => (
                     <button
                       key={num}
@@ -432,7 +432,7 @@ export function AdminAnalytics() {
                         setStreamLimit(num);
                         setStreamPage(1);
                       }}
-                      className={`px-2 py-1 rounded text-xs transition-colors cursor-pointer ${
+                      className={`px-1.5 sm:px-2 py-1 rounded text-xs transition-colors cursor-pointer ${
                         streamLimit === num
                           ? "bg-accent text-paper font-semibold"
                           : "hover:text-ink"
@@ -445,8 +445,8 @@ export function AdminAnalytics() {
               </div>
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            {/* Filter Pills with horizontal swipe on mobile */}
+            <div className="flex overflow-x-auto no-scrollbar items-center gap-1.5 pt-1 -mx-3.5 px-3.5 sm:mx-0 sm:px-0 sm:flex-wrap">
               {STREAM_FILTER_TYPES.map((f) => {
                 const Icon = f.icon;
                 const isSelected = streamType === f.key;
@@ -458,7 +458,7 @@ export function AdminAnalytics() {
                       setStreamType(f.key);
                       setStreamPage(1);
                     }}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer shrink-0 ${
                       isSelected
                         ? "bg-ink text-paper font-medium shadow-2xs"
                         : "border border-hairline bg-paper/60 text-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/5"
@@ -472,12 +472,12 @@ export function AdminAnalytics() {
             </div>
 
             {/* Search Input */}
-            <form onSubmit={handleSearchSubmit} className="relative flex items-center gap-2">
+            <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <div className="relative flex-1">
                 <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
                 <input
                   type="text"
-                  placeholder="search by path, action, city, country, browser, os, or session id..."
+                  placeholder="search by path, action, city, browser, sid..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   className="w-full pl-9 pr-9 py-2 rounded-xl border border-hairline bg-paper text-ink text-xs font-mono placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
@@ -495,7 +495,7 @@ export function AdminAnalytics() {
 
               <button
                 type="submit"
-                className="px-4 py-2 rounded-xl bg-accent text-paper text-xs font-mono font-medium hover:bg-accent/90 transition-colors cursor-pointer shrink-0"
+                className="px-4 py-2 rounded-xl bg-accent text-paper text-xs font-mono font-medium hover:bg-accent/90 transition-colors cursor-pointer shrink-0 text-center"
               >
                 filter stream
               </button>
@@ -504,15 +504,15 @@ export function AdminAnalytics() {
             {/* Active search tag banner */}
             {streamSearch && (
               <div className="flex items-center justify-between text-xs font-mono text-muted bg-paper/40 px-3 py-1.5 rounded-lg border border-hairline">
-                <span>
-                  Filtering stream for: <strong className="text-ink">&quot;{streamSearch}&quot;</strong>
+                <span className="truncate pr-2">
+                  Filtering for: <strong className="text-ink">&quot;{streamSearch}&quot;</strong>
                 </span>
                 <button
                   type="button"
                   onClick={clearSearch}
-                  className="text-accent hover:underline cursor-pointer"
+                  className="text-accent hover:underline cursor-pointer shrink-0"
                 >
-                  clear filter
+                  clear
                 </button>
               </div>
             )}
@@ -580,33 +580,35 @@ export function AdminAnalytics() {
                         onClick={() =>
                           setExpandedEventId(isExpanded ? null : e.id)
                         }
-                        className="p-3.5 sm:px-5 flex flex-col md:flex-row md:items-center justify-between gap-3 cursor-pointer"
+                        className="p-3 sm:p-4 sm:px-5 flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3 cursor-pointer"
                       >
                         {/* Left: Timestamp, Badge, and Action Details */}
-                        <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
-                          {/* Time Column */}
-                          <div className="w-20 shrink-0 text-left">
-                            <span className="font-mono text-xs text-ink block font-medium">
-                              {fmtTimeWithSeconds(e.ts)}
-                            </span>
-                            <span className="font-mono text-[10px] text-muted block">
-                              {timeAgo(e.ts)}
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                          {/* Time & Badge sub-row on mobile */}
+                          <div className="flex items-center justify-between sm:justify-start gap-2.5 shrink-0">
+                            <div className="flex items-baseline gap-1.5 sm:block sm:w-20 shrink-0 text-left">
+                              <span className="font-mono text-xs text-ink font-medium">
+                                {fmtTimeWithSeconds(e.ts)}
+                              </span>
+                              <span className="font-mono text-[10px] text-muted">
+                                {timeAgo(e.ts)}
+                              </span>
+                            </div>
+
+                            {/* Event Type Badge */}
+                            <span
+                              className={`inline-flex items-center gap-1 px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-mono border shrink-0 ${badge.className}`}
+                            >
+                              <Icon className="w-3 h-3" />
+                              <span>{badge.label}</span>
                             </span>
                           </div>
 
-                          {/* Event Type Badge */}
-                          <span
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono border shrink-0 ${badge.className}`}
-                          >
-                            <Icon className="w-3 h-3" />
-                            <span>{badge.label}</span>
-                          </span>
-
                           {/* Event Action / Target Description */}
                           <div className="min-w-0 flex-1 text-xs">
-                            <div className="flex flex-wrap items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-1.5">
                               {e.label && (
-                                <span className="font-medium text-ink truncate">
+                                <span className="font-medium text-ink break-words">
                                   {e.label}
                                 </span>
                               )}
@@ -615,7 +617,7 @@ export function AdminAnalytics() {
                                   reached {e.chapter}
                                 </span>
                               )}
-                              <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 border border-hairline/80 text-muted truncate max-w-[240px]">
+                              <span className="font-mono text-[10px] sm:text-[11px] px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 border border-hairline/80 text-muted break-all max-w-full">
                                 {e.path}
                               </span>
                             </div>
@@ -623,10 +625,10 @@ export function AdminAnalytics() {
                         </div>
 
                         {/* Right: Client, Geo, Session Metadata */}
-                        <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-muted justify-between md:justify-end shrink-0 pt-1 md:pt-0 border-t md:border-t-0 border-hairline/50">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-mono text-muted justify-between md:justify-end shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-hairline/40">
                           {/* Location */}
                           {(e.city || e.country) && (
-                            <span className="inline-flex items-center gap-1 truncate max-w-[160px]">
+                            <span className="inline-flex items-center gap-1 truncate max-w-[130px] sm:max-w-[160px]">
                               <Globe className="w-3 h-3 text-accent shrink-0" />
                               <span className="truncate">
                                 {[e.city, e.country].filter(Boolean).join(", ")}
@@ -650,16 +652,23 @@ export function AdminAnalytics() {
                               filterBySession(e.sid);
                             }}
                             title={`Filter stream by session ${e.sid}`}
-                            className="px-1.5 py-0.5 rounded text-[10px] border border-hairline bg-paper hover:border-accent hover:text-ink transition-colors cursor-pointer"
+                            className="px-1.5 py-0.5 rounded text-[10px] border border-hairline bg-paper hover:border-accent hover:text-ink transition-colors cursor-pointer shrink-0"
                           >
                             sid:{e.sid.slice(0, 6)}…
                           </button>
+
+                          {/* Expand chevron */}
+                          <ChevronRight
+                            className={`w-3.5 h-3.5 text-muted transition-transform duration-200 hidden sm:inline-block ${
+                              isExpanded ? "rotate-90 text-accent" : ""
+                            }`}
+                          />
                         </div>
                       </div>
 
                       {/* Expandable Detailed Metadata Tray */}
                       {isExpanded && (
-                        <div className="px-5 py-4 bg-black/[0.03] dark:bg-white/[0.03] border-t border-hairline text-xs font-mono space-y-3">
+                        <div className="px-3.5 sm:px-5 py-3.5 sm:py-4 bg-black/[0.03] dark:bg-white/[0.03] border-t border-hairline text-xs font-mono space-y-3">
                           <div className="flex items-center justify-between">
                             <span className="text-[11px] font-semibold text-accent uppercase tracking-wider">
                               detailed event inspector
@@ -669,7 +678,7 @@ export function AdminAnalytics() {
                             </span>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-[11px]">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3 text-[11px]">
                             <div className="p-2.5 rounded-lg border border-hairline bg-paper space-y-1">
                               <span className="text-muted block text-[10px] uppercase">
                                 route path
@@ -739,24 +748,29 @@ export function AdminAnalytics() {
 
             {/* Pagination Controls Bar */}
             {streamData && streamData.totalPages > 1 && (
-              <div className="p-4 border-t border-hairline bg-paper/90 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+              <div className="p-3 sm:p-4 border-t border-hairline bg-paper/90 flex items-center justify-between gap-2 text-xs font-mono">
                 {/* Previous Button */}
                 <button
                   type="button"
                   disabled={streamPage <= 1 || streamLoading}
                   onClick={() => setStreamPage((p) => Math.max(1, p - 1))}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-hairline bg-paper text-ink hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg border border-hairline bg-paper text-ink hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shrink-0"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
-                  <span>previous page</span>
+                  <span className="hidden sm:inline">previous page</span>
+                  <span className="sm:hidden">prev</span>
                 </button>
 
-                {/* Page Number Pills */}
-                <div className="flex items-center gap-1">
+                {/* Mobile Page Indicator */}
+                <div className="sm:hidden text-[11px] text-muted font-medium text-center truncate">
+                  page <strong className="text-ink">{streamPage}</strong> / {streamData.totalPages}
+                </div>
+
+                {/* Desktop Page Number Pills */}
+                <div className="hidden sm:flex items-center gap-1">
                   {Array.from(
                     { length: Math.min(7, streamData.totalPages) },
                     (_, i) => {
-                      // Window calculation for page pills
                       let pageNum = i + 1;
                       if (streamData.totalPages > 7) {
                         const start = Math.max(
@@ -795,9 +809,10 @@ export function AdminAnalytics() {
                       Math.min(streamData.totalPages, p + 1)
                     )
                   }
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-hairline bg-paper text-ink hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg border border-hairline bg-paper text-ink hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer shrink-0"
                 >
-                  <span>next page</span>
+                  <span className="hidden sm:inline">next page</span>
+                  <span className="sm:hidden">next</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
