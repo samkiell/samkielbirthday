@@ -38,17 +38,17 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
-      toast.success("Letter link copied to clipboard");
+      toast.success("letter link copied to clipboard");
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      toast.error("Could not copy link");
+      toast.error("could not copy link");
     }
   };
 
   const handleWhatsAppShare = () => {
     const url = getShareUrl();
     const text = encodeURIComponent(
-      `Read this letter from ${wish.name} for samkiel at 20: "${wish.message}"\n\n${url}`
+      `read this letter from ${wish.name} for samkiel at 20: "${wish.message}"\n\n${url}`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
   };
@@ -68,7 +68,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
           className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted hover:text-ink transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>All letters</span>
+          <span>all letters</span>
         </Link>
 
         <span className="text-[11px] font-mono tracking-wider text-muted">
@@ -82,7 +82,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
         <div className="flex flex-wrap items-start justify-between gap-4 border-b border-hairline/80 pb-6">
           <div className="space-y-1">
             <span className="text-[10px] font-mono tracking-widest uppercase text-accent font-semibold">
-              Chapter 20 · Personal Letter
+              chapter 20 · personal letter
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl font-medium text-ink">
               {wish.name}
@@ -115,7 +115,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
         <div className="p-3.5 rounded-xl border border-hairline bg-paper/60 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
           <div className="flex items-center gap-2 text-muted truncate">
             <span className="text-[10px] uppercase tracking-wider text-accent">
-              Share Link:
+              share link:
             </span>
             <span className="text-ink truncate">/wish/{wish.code}</span>
           </div>
@@ -128,12 +128,12 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
             {copied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-accent" />
-                <span>Copied</span>
+                <span>copied</span>
               </>
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5 text-muted" />
-                <span>Copy link</span>
+                <span>copy link</span>
               </>
             )}
           </button>
@@ -148,7 +148,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-2xs"
             >
               <Download className="w-3.5 h-3.5 text-accent" />
-              <span>Download card</span>
+              <span>download card</span>
             </button>
 
             <button
@@ -157,7 +157,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-all cursor-pointer shadow-2xs"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span>Share card</span>
+              <span>share card</span>
             </button>
           </div>
 
@@ -167,7 +167,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-hairline bg-paper text-muted hover:text-ink text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer"
           >
             <MessageCircle className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
-            <span>WhatsApp</span>
+            <span>whatsapp</span>
           </button>
         </div>
       </article>
@@ -179,7 +179,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
           className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors font-medium"
         >
           <PenLine className="w-4 h-4 text-accent" />
-          <span>Write your own letter to samkiel →</span>
+          <span>write your own letter to samkiel →</span>
         </Link>
 
         <Link
@@ -187,7 +187,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
           className="inline-flex items-center gap-2 text-muted hover:text-ink transition-colors"
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Explore journal & story</span>
+          <span>explore journal & story</span>
         </Link>
       </div>
     </div>
