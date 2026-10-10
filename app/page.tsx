@@ -329,8 +329,8 @@ export default function HomePage() {
                 <p className="text-sm leading-relaxed text-ink/90">
                   events do this too. at devfest in osogbo i shared a car from
                   ife with people from my own gdg community i'd never really talked
-                  to. we'd been in the same room for months and only properly met on
-                  that road. the nacos event in ibadan did the same.
+                  to. we'd been in the same room for months and only actaully met on
+                  that road. one nacos event in ibadan did the same.
                 </p>
               </article>
 
@@ -340,7 +340,7 @@ export default function HomePage() {
                 </h3>
                 <p className="text-sm leading-relaxed text-ink/90">
                   i have pride. people have told me and i know it. i want to be as
-                  humble as i can in every situation.
+                  humble as i can in every situation going forward.
                 </p>
               </article>
             </div>
@@ -417,7 +417,8 @@ export default function HomePage() {
 
               <div className="pt-8 border-t border-hairline space-y-4">
                 <p className="font-serif italic text-lg sm:text-xl text-ink">
-                  another year. another chapter. let's see what i do with it.
+                  another year. another chapter. let's see what i do with it. you've read up 
+                  to this point, omo u don try, 1 api credits for u😹
                 </p>
                 <button
                   onClick={handleManifestoFinish}
@@ -442,7 +443,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="hover:text-ink transition-colors"
               >
-                samkiel.dev
+                portfolio
               </a>
               <span>·</span>
               <a
@@ -451,7 +452,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="hover:text-ink transition-colors"
               >
-                GitHub samkiell
+                GitHub
               </a>
             </div>
           </footer>
