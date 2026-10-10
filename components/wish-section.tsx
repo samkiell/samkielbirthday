@@ -5,7 +5,8 @@ import { toast } from "sonner";
 import { triggerConfetti } from "@/lib/confetti";
 import { RELATIONSHIP_OPTIONS, WishResponse } from "@/types/wishes";
 import Link from "next/link";
-import { Send, FileDown, Image as ImageIcon, Loader2 } from "lucide-react";
+import { Send, Image as ImageIcon, Loader2, Check, PenLine, Download, Share2 } from "lucide-react";
+import { downloadLetterAsPng, shareLetterAsPng } from "@/lib/letter-card-generator";
 
 export function WishSection() {
   const [wishes, setWishes] = useState<WishResponse[]>([]);
@@ -15,11 +16,12 @@ export function WishSection() {
   const [submitting, setSubmitting] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  // Form fields
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [relationship, setRelationship] = useState("");
+  const [customRelationship, setCustomRelationship] = useState("");
   const [honeypot, setHoneypot] = useState("");
+  const [sentSuccess, setSentSuccess] = useState(false);
 
   const maxMessageLen = 280;
 
@@ -67,13 +69,20 @@ export function WishSection() {
 
     setSubmitting(true);
     try {
+      const finalRelationship =
+        relationship === "Other"
+          ? customRelationship.trim()
+            ? `Other: ${customRelationship.trim()}`
+            : "Other"
+          : relationship;
+
       const res = await fetch("/api/wishes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
           message: message.trim(),
-          relationship: relationship || undefined,
+          relationship: finalRelationship || undefined,
           honeypot,
         }),
       });
@@ -94,7 +103,9 @@ export function WishSection() {
       setName("");
       setMessage("");
       setRelationship("");
+      setCustomRelationship("");
       setHoneypot("");
+      setSentSuccess(true);
 
       // Refresh wishes list
       fetchWishes(1, false);
@@ -117,11 +128,38 @@ export function WishSection() {
         </p>
       </div>
 
-      {/* Submission Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="p-6 sm:p-8 rounded-xl border border-hairline bg-paper/60 space-y-6"
-      >
+      {/* Submission Form or Sent State */}
+      {sentSuccess ? (
+        <div className="p-8 sm:p-10 rounded-xl border border-hairline bg-paper/70 backdrop-blur-xs text-center space-y-5 animate-in fade-in zoom-in-95 duration-200">
+          <div className="w-12 h-12 rounded-full bg-accent-soft border border-accent/20 text-accent flex items-center justify-center mx-auto shadow-xs">
+            <Check className="w-6 h-6" />
+          </div>
+
+          <div className="space-y-1.5 max-w-md mx-auto">
+            <h4 className="font-serif text-2xl text-ink font-normal">
+              Letter placed on the wall
+            </h4>
+            <p className="text-muted text-sm leading-relaxed">
+              Thank you for writing. Your note is now part of Chapter 20 and will be kept in the journal.
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => setSentSuccess(false)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-xs"
+            >
+              <PenLine className="w-3.5 h-3.5 text-accent" />
+              <span>Send another note</span>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 sm:p-8 rounded-xl border border-hairline bg-paper/60 space-y-6"
+        >
         {/* Honeypot field (hidden from genuine users) */}
         <div className="hidden" aria-hidden="true">
           <label htmlFor="website-hp">Website</label>
@@ -165,7 +203,12 @@ export function WishSection() {
             <select
               id="wish-relationship"
               value={relationship}
-              onChange={(e) => setRelationship(e.target.value)}
+              onChange={(e) => {
+                setRelationship(e.target.value);
+                if (e.target.value !== "Other") {
+                  setCustomRelationship("");
+                }
+              }}
               className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
             >
               <option value="">Select how you know me</option>
@@ -175,6 +218,20 @@ export function WishSection() {
                 </option>
               ))}
             </select>
+
+            {relationship === "Other" && (
+              <div className="pt-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                <input
+                  type="text"
+                  maxLength={50}
+                  placeholder="Please specify (e.g. Mentor, Secondary school, Church)..."
+                  value={customRelationship}
+                  onChange={(e) => setCustomRelationship(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                  aria-label="Specify other relationship"
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -225,7 +282,8 @@ export function WishSection() {
             </>
           )}
         </button>
-      </form>
+        </form>
+      )}
 
       {/* Wishes Wall */}
       <div className="space-y-6">
@@ -266,12 +324,32 @@ export function WishSection() {
                       </span>
                     )}
                   </div>
-                  <time dateTime={w.createdAt}>
-                    {new Date(w.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </time>
+                  <div className="flex items-center gap-3">
+                    <time dateTime={w.createdAt}>
+                      {new Date(w.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </time>
+                    <div className="flex items-center gap-1 border-l border-hairline/60 pl-2">
+                      <button
+                        type="button"
+                        onClick={() => downloadLetterAsPng(w)}
+                        title="Download letter as PNG"
+                        className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => shareLetterAsPng(w)}
+                        title="Share letter"
+                        className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
+                      >
+                        <Share2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </article>
             ))}
@@ -302,13 +380,12 @@ export function WishSection() {
           <span>Birthday pictures to share</span>
         </Link>
 
-        <a
-          href="/api/wishes/pdf"
+        <Link
+          href="/wishes"
           className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors"
         >
-          <FileDown className="w-4 h-4" />
-          <span>Download all letters (PDF)</span>
-        </a>
+          <span>Open full floating wall →</span>
+        </Link>
       </div>
     </div>
   );
