@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { recordServerEvent } from "@/lib/analytics-service";
 import {
   createWish,
   getApprovedWishes,
@@ -41,6 +42,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
 
+    await recordServerEvent("wish_submit");
     return NextResponse.json(result.wish, { status: 201 });
   } catch (error) {
     console.error("POST /api/wishes error:", error);
