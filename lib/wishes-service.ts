@@ -27,8 +27,45 @@ export const wishInputSchema = z.object({
 
 export type WishInput = z.infer<typeof wishInputSchema>;
 
+const SHORT_CODE_CHARS = "abcdefghijklmnopqrstuvwxyz";
+
+export function generateShortCode(): string {
+  let code = "";
+  for (let i = 0; i < 4; i++) {
+    code += SHORT_CODE_CHARS.charAt(
+      Math.floor(Math.random() * SHORT_CODE_CHARS.length)
+    );
+  }
+  return code;
+}
+
+export function getWishCode(doc: {
+  _id?: ObjectId | string;
+  id?: string;
+  code?: string;
+}): string {
+  if (doc.code && doc.code.trim().length === 4) {
+    return doc.code.toLowerCase();
+  }
+  const idStr =
+    doc.id ||
+    (typeof doc._id === "string" ? doc._id : doc._id?.toString()) ||
+    "seed";
+  if (idStr === "seed-1") return "ghry";
+  if (idStr === "seed-2") return "kiel";
+
+  const hash = crypto.createHash("md5").update(idStr).digest("hex");
+  let code = "";
+  for (let i = 0; i < 4; i++) {
+    const val = parseInt(hash.slice(i * 2, i * 2 + 2), 16);
+    code += SHORT_CODE_CHARS[val % SHORT_CODE_CHARS.length];
+  }
+  return code;
+}
+
 export interface WishDocument {
   _id?: ObjectId | string;
+  code?: string;
   name: string;
   message: string;
   relationship?: string;
@@ -42,8 +79,10 @@ export type { WishResponse };
 const memoryWishes: WishDocument[] = [
   {
     _id: "seed-1",
+    code: "ghry",
     name: "A friend",
-    message: "Happy 20th birthday samkiel. Keep building with intention. Watching your journey from the button phone days to now is inspiring.",
+    message:
+      "Happy 20th birthday samkiel. Keep building with intention. Watching your journey from the button phone days to now is inspiring.",
     relationship: "Friend",
     status: "approved",
     createdAt: new Date("2026-10-10T08:00:00Z"),
@@ -51,8 +90,10 @@ const memoryWishes: WishDocument[] = [
   },
   {
     _id: "seed-2",
+    code: "kiel",
     name: "Fellow Dev",
-    message: "Happy birthday bro. Excited for what chapter 20 brings for you and your startup. Keep raising the bar.",
+    message:
+      "Happy birthday bro. Excited for what chapter 20 brings for you and your startup. Keep raising the bar.",
     relationship: "Fellow developer",
     status: "approved",
     createdAt: new Date("2026-10-10T10:30:00Z"),
@@ -121,6 +162,7 @@ export async function getApprovedWishes(
 
       const wishes: WishResponse[] = docs.map((doc) => ({
         id: doc._id?.toString() || "",
+        code: getWishCode(doc),
         name: doc.name,
         message: doc.message,
         relationship: doc.relationship,
@@ -142,6 +184,7 @@ export async function getApprovedWishes(
   const slice = approved.slice((page - 1) * limit, page * limit);
   const wishes: WishResponse[] = slice.map((w) => ({
     id: typeof w._id === "string" ? w._id : w._id?.toString() || "",
+    code: getWishCode(w),
     name: w.name,
     message: w.message,
     relationship: w.relationship,
@@ -184,7 +227,10 @@ export async function createWish(
     ? "pending"
     : "approved";
 
+  let code = generateShortCode();
+
   const newDoc: WishDocument = {
+    code,
     name: data.name,
     message: data.message,
     relationship: data.relationship || undefined,
@@ -197,6 +243,12 @@ export async function createWish(
   if (db) {
     try {
       const collection = db.collection<WishDocument>("wishes");
+      let attempts = 0;
+      while (attempts < 5 && (await collection.countDocuments({ code })) > 0) {
+        code = generateShortCode();
+        attempts++;
+      }
+      newDoc.code = code;
       const res = await collection.insertOne(newDoc);
       newDoc._id = res.insertedId;
     } catch (err) {
@@ -214,6 +266,7 @@ export async function createWish(
     success: true,
     wish: {
       id: newDoc._id ? newDoc._id.toString() : "",
+      code: getWishCode(newDoc),
       name: newDoc.name,
       message: newDoc.message,
       relationship: newDoc.relationship,
@@ -237,6 +290,7 @@ export async function getAllAdminWishes(statusFilter?: string): Promise<WishResp
       const docs = await collection.find(query).sort({ createdAt: -1 }).toArray();
       return docs.map((doc) => ({
         id: doc._id?.toString() || "",
+        code: getWishCode(doc),
         name: doc.name,
         message: doc.message,
         relationship: doc.relationship,
@@ -253,6 +307,7 @@ export async function getAllAdminWishes(statusFilter?: string): Promise<WishResp
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .map((w) => ({
       id: typeof w._id === "string" ? w._id : w._id?.toString() || "",
+      code: getWishCode(w),
       name: w.name,
       message: w.message,
       relationship: w.relationship,
@@ -305,4 +360,99 @@ export async function deleteWish(id: string): Promise<boolean> {
     return true;
   }
   return false;
+}
+
+export async function getWishByCode(
+  rawCode: string
+): Promise<WishResponse | null> {
+  const code = rawCode.trim().toLowerCase();
+  if (!code) return null;
+
+  const db = await getDb();
+  if (db) {
+    try {
+      const collection = db.collection<WishDocument>("wishes");
+
+      // 1. Direct code search
+      const doc = await collection.findOne({
+        code,
+        status: "approved",
+      });
+      if (doc) {
+        return {
+          id: doc._id?.toString() || "",
+          code: getWishCode(doc),
+          name: doc.name,
+          message: doc.message,
+          relationship: doc.relationship,
+          status: doc.status,
+          createdAt: doc.createdAt.toISOString(),
+        };
+      }
+
+      // 2. Direct ID search if valid ObjectId
+      if (ObjectId.isValid(rawCode)) {
+        const idDoc = await collection.findOne({
+          _id: new ObjectId(rawCode),
+          status: "approved",
+        });
+        if (idDoc) {
+          return {
+            id: idDoc._id?.toString() || "",
+            code: getWishCode(idDoc),
+            name: idDoc.name,
+            message: idDoc.message,
+            relationship: idDoc.relationship,
+            status: idDoc.status,
+            createdAt: idDoc.createdAt.toISOString(),
+          };
+        }
+      }
+
+      // 3. Scan approved docs for deterministic code fallback
+      const allApproved = await collection
+        .find({ status: "approved" })
+        .limit(500)
+        .toArray();
+      const matched = allApproved.find((d) => getWishCode(d) === code);
+      if (matched) {
+        return {
+          id: matched._id?.toString() || "",
+          code: getWishCode(matched),
+          name: matched.name,
+          message: matched.message,
+          relationship: matched.relationship,
+          status: matched.status,
+          createdAt: matched.createdAt.toISOString(),
+        };
+      }
+    } catch (err) {
+      console.error("MongoDB getWishByCode error:", err);
+    }
+  }
+
+  // Fallback to memory
+  const memDoc = memoryWishes.find(
+    (w) =>
+      w.status === "approved" &&
+      (getWishCode(w) === code ||
+        w._id?.toString() === rawCode ||
+        w.code === code)
+  );
+  if (memDoc) {
+    return {
+      id:
+        typeof memDoc._id === "string"
+          ? memDoc._id
+          : memDoc._id?.toString() || "",
+      code: getWishCode(memDoc),
+      name: memDoc.name,
+      message: memDoc.message,
+      relationship: memDoc.relationship,
+      status: memDoc.status,
+      createdAt: memDoc.createdAt.toISOString(),
+    };
+  }
+
+  return null;
 }
