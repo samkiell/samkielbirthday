@@ -74,7 +74,7 @@ export default function WishesPage() {
       const finalRelationship =
         relationship.toLowerCase() === "other"
           ? customRelationship.trim()
-            ? `other: ${customRelationship.trim()}`
+            ? customRelationship.trim().toLowerCase()
             : "other"
           : relationship;
 
@@ -124,10 +124,12 @@ export default function WishesPage() {
           if (!w.relationship) return false;
           const rel = w.relationship.toLowerCase();
           if (activeFilter === "other") {
+            const standard = ["family", "friend", "colleague", "fellow developer"];
             return (
               rel === "other" ||
               rel.startsWith("other:") ||
-              rel.startsWith("other (")
+              rel.startsWith("other (") ||
+              !standard.includes(rel)
             );
           }
           return rel === activeFilter.toLowerCase();
@@ -398,43 +400,58 @@ export default function WishesPage() {
               />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <label
-                htmlFor="author-relationship"
                 className="block text-xs font-mono uppercase tracking-wider text-muted"
               >
                 relationship <span className="text-muted/60 text-[10px]">(optional)</span>
               </label>
-              <select
-                id="author-relationship"
-                value={relationship}
-                onChange={(e) => {
-                  setRelationship(e.target.value);
-                  if (e.target.value.toLowerCase() !== "other") {
-                    setCustomRelationship("");
-                  }
-                }}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
-              >
-                <option value="">select how you know me</option>
-                {RELATIONSHIP_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
+
+              <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                {RELATIONSHIP_OPTIONS.map((opt) => {
+                  const isSelected = relationship.toLowerCase() === opt.toLowerCase();
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => {
+                        if (isSelected) {
+                          setRelationship("");
+                          setCustomRelationship("");
+                        } else {
+                          setRelationship(opt);
+                          if (opt !== "other") {
+                            setCustomRelationship("");
+                          }
+                        }
+                      }}
+                      className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                        isSelected
+                          ? "bg-accent text-paper font-semibold shadow-2xs"
+                          : "border border-hairline bg-paper/60 text-muted hover:text-ink hover:border-accent/40 hover:bg-black/5 dark:hover:bg-white/5"
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
 
               {relationship.toLowerCase() === "other" && (
-                <div className="pt-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                <div className="pt-2 animate-in fade-in slide-in-from-top-1 duration-200 space-y-1">
                   <input
                     type="text"
-                    maxLength={50}
-                    placeholder="please specify (e.g. mentor, secondary school, church)..."
+                    maxLength={40}
+                    autoFocus
+                    placeholder="specify your relationship (e.g. mentor, church, sibling)..."
                     value={customRelationship}
                     onChange={(e) => setCustomRelationship(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                    className="w-full px-3.5 py-2 rounded-lg border border-accent bg-paper text-ink text-xs font-mono placeholder:text-muted/60 focus:ring-1 focus:ring-accent outline-none transition-colors"
                     aria-label="Specify other relationship"
                   />
+                  <p className="text-[10px] font-mono text-muted">
+                    manually type how you know samkiel above
+                  </p>
                 </div>
               )}
             </div>
