@@ -133,10 +133,10 @@ export function WishSection() {
       {/* Introduction */}
       <div className="space-y-2">
         <h3 className="font-serif text-2xl text-ink font-medium">
-          write a letter to samkiel
+          wish samkiel a happy birthday
         </h3>
         <p className="text-muted text-sm leading-relaxed">
-          leave me a note for this chapter. i'll be reading these long after october 11.
+          leave me a wish for this chapter. i'll be reading these long after october 11.
         </p>
       </div>
 
@@ -149,10 +149,10 @@ export function WishSection() {
 
           <div className="space-y-1.5 max-w-md mx-auto">
             <h4 className="font-serif text-2xl text-ink font-normal">
-              letter placed on the wall
+              thanks for the wishes!
             </h4>
             <p className="text-muted text-sm leading-relaxed">
-              thank you. this one's going in the journal.
+              thank you, this one's going in the journal.
             </p>
           </div>
 
@@ -167,7 +167,7 @@ export function WishSection() {
                   onClick={() => {
                     const url = `${window.location.origin}/wish/${createdWish.code}`;
                     navigator.clipboard.writeText(url);
-                    toast.success("letter link copied");
+                    toast.success("wish link copied");
                   }}
                   className="px-2.5 py-1 rounded border border-hairline hover:border-ink text-ink text-[11px] uppercase transition-colors cursor-pointer"
                 >
@@ -193,7 +193,7 @@ export function WishSection() {
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-xs font-mono uppercase tracking-wider hover:border-ink hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer shadow-xs"
             >
               <PenLine className="w-3.5 h-3.5 text-accent" />
-              <span>send another note</span>
+              <span>send another wish</span>
             </button>
           </div>
         </div>
@@ -315,12 +315,12 @@ export function WishSection() {
           {submitting ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              <span>sending letter...</span>
+              <span>sending wish...</span>
             </>
           ) : (
             <>
               <Send className="w-4 h-4" />
-              <span>send letter</span>
+              <span>send birthday wish</span>
             </>
           )}
         </button>
@@ -330,19 +330,19 @@ export function WishSection() {
       {/* Wishes Wall */}
       <div className="space-y-6">
         <div className="flex items-center justify-between border-b border-hairline pb-3">
-          <h3 className="font-serif text-lg text-ink">letters on the wall</h3>
+          <h3 className="font-serif text-lg text-ink">wishes on the wall</h3>
           <span className="text-xs font-mono text-muted">
-            {total} {total === 1 ? "letter" : "letters"}
+            {total} {total === 1 ? "wish" : "wishes"}
           </span>
         </div>
 
         {loading ? (
           <div className="py-12 flex justify-center text-muted text-sm font-mono">
-            reading letters...
+            reading wishes...
           </div>
         ) : wishes.length === 0 ? (
           <div className="py-12 text-center text-muted text-sm italic">
-            no letters yet. be the first.
+            no wishes yet. be the first to send one.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -376,7 +376,7 @@ export function WishSection() {
                     <div className="flex items-center gap-1 border-l border-hairline/60 pl-2">
                       <Link
                         href={`/wish/${w.code}`}
-                        title="open letter page"
+                        title="open wish page"
                         className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
@@ -388,7 +388,7 @@ export function WishSection() {
                           navigator.clipboard.writeText(url);
                           toast.success(`copied /wish/${w.code}`);
                         }}
-                        title="copy letter share link"
+                        title="copy wish share link"
                         className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                       >
                         <Copy className="w-3.5 h-3.5" />
@@ -396,7 +396,7 @@ export function WishSection() {
                       <button
                         type="button"
                         onClick={() => downloadLetterAsPng(w)}
-                        title="download letter as png"
+                        title="download card as png"
                         className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
@@ -404,7 +404,7 @@ export function WishSection() {
                       <button
                         type="button"
                         onClick={() => shareLetterAsPng(w)}
-                        title="share letter"
+                        title="share wish"
                         className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
                       >
                         <Share2 className="w-3.5 h-3.5" />
