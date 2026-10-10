@@ -12,8 +12,6 @@ import {
   Send,
   Loader2,
   X,
-  LayoutGrid,
-  Waves,
   Check,
   Download,
   Share2,
@@ -26,7 +24,6 @@ export default function WishesPage() {
   const [wishes, setWishes] = useState<WishResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  const [viewMode, setViewMode] = useState<"floating" | "grid">("floating");
   const [selectedWish, setSelectedWish] = useState<WishResponse | null>(null);
 
   // Form states
@@ -172,34 +169,6 @@ export default function WishesPage() {
               a living archive of notes, memories, advice, and prayers sent to samkiel as he turns 20.
             </p>
           </div>
-
-          {/* View Mode Toggle */}
-          <div className="flex items-center gap-1 p-1 rounded-lg border border-hairline bg-paper self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={() => setViewMode("floating")}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono tracking-wider transition-colors cursor-pointer ${
-                viewMode === "floating"
-                  ? "bg-accent text-paper font-semibold"
-                  : "text-muted hover:text-ink"
-              }`}
-            >
-              <Waves className="w-3.5 h-3.5" />
-              <span>floating</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode("grid")}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono tracking-wider transition-colors cursor-pointer ${
-                viewMode === "grid"
-                  ? "bg-accent text-paper font-semibold"
-                  : "text-muted hover:text-ink"
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span>grid</span>
-            </button>
-          </div>
         </div>
 
         {/* Tag Filters */}
@@ -241,38 +210,37 @@ export default function WishesPage() {
               <span>write the first wish</span>
             </a>
           </div>
-        ) : viewMode === "floating" ? (
-          /* Floating Wall Layout */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+        ) : (
+          /* Floating Wall Layout - spacious, unclustered 2-column distribution */
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-14 items-start max-w-5xl mx-auto">
             {filteredWishes.map((w, idx) => {
-              // Staggered float animation and subtle rotations
               const isAlt = idx % 2 === 1;
               const rotation =
                 idx % 4 === 0
-                  ? "rotate-0.5"
+                  ? "rotate-[0.6deg]"
                   : idx % 4 === 1
-                  ? "-rotate-1"
+                  ? "-rotate-[0.8deg]"
                   : idx % 4 === 2
-                  ? "rotate-1"
-                  : "-rotate-0.5";
+                  ? "rotate-[0.8deg]"
+                  : "-rotate-[0.6deg]";
 
               return (
                 <article
                   key={w.id}
                   onClick={() => setSelectedWish(w)}
-                  className={`group relative p-6 rounded-2xl border border-hairline bg-paper/90 backdrop-blur-xs transition-all duration-300 hover:border-accent hover:shadow-lg cursor-pointer ${
+                  className={`group relative p-7 sm:p-8 rounded-2xl border border-hairline bg-paper/90 backdrop-blur-xs transition-all duration-300 hover:border-accent hover:shadow-xl cursor-pointer ${
                     isAlt ? "animate-float-alt" : "animate-float-slow"
                   } ${rotation}`}
-                  style={{ animationDelay: `${(idx % 5) * 0.8}s` }}
+                  style={{ animationDelay: `${(idx % 4) * 1.2}s` }}
                 >
-                  {/* Pin mark indicator */}
-                  <div className="w-2.5 h-2.5 rounded-full border border-hairline bg-accent/30 mx-auto -mt-2 mb-4 group-hover:bg-accent transition-colors" />
+                  {/* Subtle pin mark indicator */}
+                  <div className="w-2.5 h-2.5 rounded-full border border-hairline bg-accent/30 mx-auto -mt-2.5 mb-5 group-hover:bg-accent transition-colors" />
 
-                  <p className="text-ink text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-6 font-editorial italic">
+                  <p className="text-ink text-base sm:text-lg leading-relaxed whitespace-pre-wrap line-clamp-6 font-editorial italic">
                     &ldquo;{w.message}&rdquo;
                   </p>
 
-                  <div className="mt-5 pt-4 border-t border-hairline/60 flex items-center justify-between text-xs font-mono text-muted">
+                  <div className="mt-6 pt-4 border-t border-hairline/60 flex items-center justify-between text-xs font-mono text-muted">
                     <div className="flex items-center gap-2">
                       <span className="font-sans font-semibold text-ink">
                         {w.name}
@@ -317,77 +285,6 @@ export default function WishesPage() {
                 </article>
               );
             })}
-          </div>
-        ) : (
-          /* Grid View Layout */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {filteredWishes.map((w) => (
-              <article
-                key={w.id}
-                onClick={() => setSelectedWish(w)}
-                className="p-5 rounded-xl border border-hairline bg-paper/70 hover:border-accent transition-all cursor-pointer flex flex-col justify-between gap-4"
-              >
-                <p className="text-ink text-sm leading-relaxed whitespace-pre-wrap font-editorial italic">
-                  &ldquo;{w.message}&rdquo;
-                </p>
-
-                <div className="pt-3 border-t border-hairline/60 flex items-center justify-between text-xs font-mono text-muted">
-                  <div className="flex items-center gap-2">
-                    <span className="font-sans font-medium text-ink">
-                      {w.name}
-                    </span>
-                    {w.relationship && (
-                      <span className="text-[10px] uppercase px-1.5 py-0.5 rounded border border-hairline bg-paper">
-                        {w.relationship}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <time dateTime={w.createdAt}>
-                      {new Date(w.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </time>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const url = `${window.location.origin}/wish/${w.code}`;
-                        navigator.clipboard.writeText(url);
-                        toast.success(`copied /wish/${w.code}`);
-                      }}
-                      title="Copy wish share link"
-                      className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
-                    >
-                      <Copy className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        downloadLetterAsPng(w);
-                      }}
-                      title="Download card as PNG"
-                      className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        shareLetterAsPng(w);
-                      }}
-                      title="Share wish"
-                      className="p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-muted hover:text-ink transition-colors cursor-pointer"
-                    >
-                      <Share2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
           </div>
         )}
       </div>
