@@ -24,7 +24,7 @@ export async function generateMetadata({
   const title = `letter from ${wish.name} · samkiel turns 20`;
   const description = `"${wish.message}" — birthday letter for samkiel at 20.`;
   const url = `https://birthday.samkiel.dev/wish/${wish.code}`;
-  const image = "https://birthday.samkiel.dev/pictures/samkielbday01.jpg";
+  const image = "https://birthday.samkiel.dev/og-portrait.jpg";
 
   return {
     title,
@@ -38,8 +38,9 @@ export async function generateMetadata({
       images: [
         {
           url: image,
-          width: 1200,
-          height: 1500,
+          width: 1080,
+          height: 1350,
+          type: "image/jpeg",
           alt: "samkiel - chapter 20 portrait",
         },
       ],
