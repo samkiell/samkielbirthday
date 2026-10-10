@@ -24,23 +24,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "samkiel turns 20 · Another Year. Another Chapter.",
+  title: "samkiel turns 20 · Two Decades In. Still Becoming.",
   description:
-    "A personal digital journal for October 11, 2026. Another year older. Still becoming.",
+    "A personal digital journal for October 11, 2026. Two decades in. Still becoming.",
   openGraph: {
-    title: "samkiel turns 20 · Another Year. Another Chapter.",
-    description: "Another year older. Still becoming. October 11, 2026.",
+    title: "samkiel turns 20 · Two Decades In. Still Becoming.",
+    description: "Two decades in. Still becoming. October 11, 2026.",
     url: "https://birthday.samkiel.dev",
     siteName: "birthday.samkiel.dev",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "samkiel turns 20 · Another Year. Another Chapter.",
-    description: "Another year older. Still becoming. October 11, 2026.",
+    title: "samkiel turns 20 · Two Decades In. Still Becoming.",
+    description: "Two decades in. Still becoming. October 11, 2026.",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      {
+        url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/icon.svg",
+        type: "image/svg+xml",
+      },
+    ],
   },
 };
 
@@ -73,7 +82,7 @@ export default function RootLayout({
         >
           <Navbar />
 
-          <main className="flex-1 pt-14">{children}</main>
+          <main className="flex-1 pt-16">{children}</main>
 
           <Toaster
             position="bottom-center"
