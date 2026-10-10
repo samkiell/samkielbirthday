@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #F6F3EE;
+  --ink: #17150F;
+  --muted: #6B665C;
+  --hairline: #DDD6C8;
+  --accent: #1F4D3A;
+  --accent-soft: rgba(31, 77, 58, 0.08);
+  --accent-hover: #16382a;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+.dark {
+  --paper: #121210;
+  --ink: #F1EDE4;
+  --muted: #9A958A;
+  --hairline: #2A2924;
+  --accent: #7FB69A;
+  --accent-soft: rgba(127, 182, 154, 0.12);
+  --accent-hover: #98cbb1;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-serif: var(--font-fraunces), serif;
+  --font-sans: var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: #F6F3EE;
+}
+
+/* Hairline borders */
+.border-hairline {
+  border-color: var(--hairline);
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
