@@ -107,68 +107,38 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
         {/* Wish Body with Editorial Typography */}
         <div className="py-2 space-y-4">
           <p className="font-editorial text-xl sm:text-3xl text-ink leading-relaxed italic whitespace-pre-wrap">
-            &ldquo;{wish.message}&rdquo;
+            &ldquo;{wish.message.replace(/^["“'”]+|["“'”]+$/g, "").trim()}&rdquo;
           </p>
 
-          {/* Dropped Fountain Pen Design ("pen dropped, as per done writing") */}
+          {/* Editorial Nib Insignia / Colophon Divider */}
           <div
-            className="flex items-center justify-end pt-3 pb-1 pr-2 opacity-80 select-none"
+            className="flex items-center justify-center gap-4 py-4 opacity-70 select-none"
             aria-hidden="true"
           >
+            <div className="h-px w-16 sm:w-24 bg-hairline" />
             <svg
-              width="140"
-              height="26"
-              viewBox="0 0 140 26"
+              width="20"
+              height="24"
+              viewBox="0 0 20 24"
               fill="none"
-              className="rotate-[-5deg] drop-shadow-xs"
+              className="text-accent shrink-0"
             >
-              {/* Soft ground shadow */}
-              <ellipse
-                cx="66"
-                cy="21"
-                rx="62"
-                ry="3"
-                fill="currentColor"
-                className="text-black/15 dark:text-black/40 blur-[2px]"
-              />
-              {/* Pen finial */}
-              <rect x="5" y="8.5" width="3.5" height="9" rx="1.5" fill="#C8A14E" />
-              {/* Pen barrel */}
-              <rect
-                x="8.5"
-                y="7.5"
-                width="72"
-                height="11"
-                rx="3"
-                className="fill-[#1A3024] dark:fill-[#223B2D]"
-              />
-              {/* Center gold band */}
-              <rect x="80.5" y="7" width="4" height="12" fill="#E0BF62" />
-              {/* Contoured grip section */}
-              <path
-                d="M84.5 8 L102 9.5 L102 16.5 L84.5 18 Z"
-                className="fill-[#2B2926] dark:fill-[#1C1A17]"
-              />
               {/* Nib collar */}
-              <rect x="102" y="9" width="2.5" height="8" fill="#E0BF62" />
-              {/* Spade fountain nib */}
+              <line x1="5" y1="2" x2="15" y2="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              {/* Symmetrical editorial nib outline */}
               <path
-                d="M104.5 9 Q111.5 7.5 116 9.5 L127 13 L116 16.5 Q111.5 18.5 104.5 17 Z"
-                fill="#DFC26C"
+                d="M5 2 C3 8 4 14 10 22 C16 14 17 8 15 2"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              {/* Slit & breather hole */}
-              <line
-                x1="112"
-                y1="13"
-                x2="127"
-                y2="13"
-                stroke="#1B1711"
-                strokeWidth="0.8"
-              />
-              <circle cx="112" cy="13" r="1.1" fill="#1B1711" />
-              {/* Fresh ink drop at nib point */}
-              <circle cx="131" cy="14" r="1.8" className="fill-accent" />
+              {/* Breather hole */}
+              <circle cx="10" cy="11" r="1.3" fill="currentColor" />
+              {/* Ink slit */}
+              <line x1="10" y1="12.3" x2="10" y2="22" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
             </svg>
+            <div className="h-px w-16 sm:w-24 bg-hairline" />
           </div>
         </div>
 
