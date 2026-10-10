@@ -7,12 +7,12 @@ import { ThemeToggle } from "./theme-toggle";
 import { Menu, X, PenLine } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "Home", href: "/#chapter-01" },
-  { label: "My Story", href: "/#chapter-02" },
-  { label: "Reflections", href: "/#chapter-03" },
-  { label: "Wish Wall", href: "/wishes" },
-  { label: "Pictures", href: "/pictures" },
-  { label: "Next Chapter", href: "/#chapter-05" },
+  { label: "home", href: "/#chapter-01" },
+  { label: "my story", href: "/#chapter-02" },
+  { label: "reflections", href: "/#chapter-03" },
+  { label: "wish wall", href: "/wishes" },
+  { label: "pictures", href: "/pictures" },
+  { label: "next chapter", href: "/#chapter-05" },
 ];
 
 export function Navbar() {
@@ -67,7 +67,7 @@ export function Navbar() {
             className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-colors cursor-pointer shadow-xs"
           >
             <PenLine className="w-3 h-3" />
-            <span>Leave a Wish</span>
+            <span>leave a wish</span>
           </Link>
 
           {/* Device/Light/Dark Theme Toggle */}
@@ -77,7 +77,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={mobileMenuOpen ? "close menu" : "open menu"}
             className="md:hidden flex items-center justify-center w-8 h-8 rounded-full border border-hairline text-muted hover:text-ink cursor-pointer"
           >
             {mobileMenuOpen ? (
@@ -112,7 +112,7 @@ export function Navbar() {
               className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-accent text-paper text-xs font-mono uppercase tracking-wider hover:bg-accent/90 transition-colors"
             >
               <PenLine className="w-3.5 h-3.5" />
-              <span>Leave a Wish</span>
+              <span>leave a wish</span>
             </Link>
           </div>
         </div>
