@@ -5,17 +5,22 @@ import { ObjectId, Filter } from "mongodb";
 import { RELATIONSHIP_OPTIONS, WishResponse } from "@/types/wishes";
 export { RELATIONSHIP_OPTIONS };
 
+export const MIN_NAME_LENGTH = 2;
+export const MAX_NAME_LENGTH = 60;
+export const MIN_MESSAGE_LENGTH = 10;
+export const MAX_MESSAGE_LENGTH = 280;
+
 export const wishInputSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, "name is required")
-    .max(60, "keep it under 60 characters"),
+    .min(MIN_NAME_LENGTH, `name must be at least ${MIN_NAME_LENGTH} characters`)
+    .max(MAX_NAME_LENGTH, `keep it under ${MAX_NAME_LENGTH} characters`),
   message: z
     .string()
     .trim()
-    .min(1, "message is required")
-    .max(280, "keep it under 280 characters"),
+    .min(MIN_MESSAGE_LENGTH, `wish must be at least ${MIN_MESSAGE_LENGTH} characters`)
+    .max(MAX_MESSAGE_LENGTH, `keep it under ${MAX_MESSAGE_LENGTH} characters`),
   relationship: z
     .string()
     .trim()
@@ -120,6 +125,53 @@ export function containsProfanity(text: string): boolean {
   );
 }
 
+/**
+ * Spam detector: validates minimum character thresholds and flags repetitive / low-entropy spam.
+ */
+export function detectSpam(
+  name: string,
+  message: string
+): { isSpam: boolean; reason?: string } {
+  const trimmedName = name.trim();
+  const trimmedMessage = message.trim();
+
+  // 1. Minimum character length validation
+  if (trimmedName.length < MIN_NAME_LENGTH) {
+    return {
+      isSpam: true,
+      reason: `name must be at least ${MIN_NAME_LENGTH} characters`,
+    };
+  }
+  if (trimmedMessage.length < MIN_MESSAGE_LENGTH) {
+    return {
+      isSpam: true,
+      reason: `wish must be at least ${MIN_MESSAGE_LENGTH} characters`,
+    };
+  }
+
+  // 2. Repetitive character spam (e.g., "aaaaaaaaa", "hahahahahaha" repeating characters 7+ times)
+  if (/(.)\1{6,}/i.test(trimmedMessage)) {
+    return {
+      isSpam: true,
+      reason: "message flagged as spam: repetitive characters",
+    };
+  }
+
+  // 3. Low character diversity spam for messages >= minimum length (e.g., "asdasdasdasd")
+  const alphaChars = trimmedMessage.toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (alphaChars.length >= MIN_MESSAGE_LENGTH) {
+    const uniqueChars = new Set(alphaChars).size;
+    if (uniqueChars < 3) {
+      return {
+        isSpam: true,
+        reason: "message flagged as spam: low character variation",
+      };
+    }
+  }
+
+  return { isSpam: false };
+}
+
 export async function getApprovedWishes(
   page = 1,
   limit = 20
@@ -181,7 +233,13 @@ export async function createWish(
     return { success: false, error: "submission rejected" };
   }
 
-  // 2. Rate limit check
+  // 2. Spam detection (character length thresholds & repetitive patterns)
+  const spamCheck = detectSpam(data.name, data.message);
+  if (spamCheck.isSpam) {
+    return { success: false, error: spamCheck.reason || "submission flagged as spam" };
+  }
+
+  // 3. Rate limit check
   const ipHash = hashIp(ip);
   if (!checkRateLimit(ipHash)) {
     return {

@@ -58,16 +58,24 @@ export function WishSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim()) {
-      toast.error("name is required");
+    const trimmedName = name.trim();
+    const trimmedMessage = message.trim();
+
+    if (!trimmedName || trimmedName.length < 2) {
+      toast.error("please drop your name (at least 2 characters)");
       return;
     }
-    if (!message.trim()) {
-      toast.error("message is required");
+    if (!trimmedMessage || trimmedMessage.length < 10) {
+      toast.error("please write at least 10 characters for your wish");
       return;
     }
-    if (message.length > maxMessageLen) {
+    if (trimmedMessage.length > maxMessageLen) {
       toast.error("keep it under 280 characters");
+      return;
+    }
+
+    if (/(.)\1{6,}/i.test(trimmedMessage)) {
+      toast.error("please write a meaningful wish without repetitive characters");
       return;
     }
 
@@ -220,6 +228,7 @@ export function WishSection() {
               id="wish-name"
               type="text"
               required
+              minLength={2}
               maxLength={60}
               placeholder="your name"
               value={name}
@@ -283,18 +292,24 @@ export function WishSection() {
             </label>
             <span
               className={`text-[11px] font-mono ${
-                message.length > 260
+                message.trim().length > 0 && message.trim().length < 10
+                  ? "text-amber-500 font-medium"
+                  : message.length > 260
                   ? "text-red-500 font-semibold"
                   : "text-muted"
               }`}
             >
               {message.length} / {maxMessageLen}
+              {message.trim().length > 0 && message.trim().length < 10 && (
+                <span className="ml-1 text-[10px] text-amber-500/90">(min 10)</span>
+              )}
             </span>
           </div>
           <textarea
             id="wish-message"
             required
             rows={4}
+            minLength={10}
             maxLength={maxMessageLen}
             placeholder="write something nice (280 characters max)"
             value={message}
