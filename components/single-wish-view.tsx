@@ -88,7 +88,7 @@ export function SingleWishView({ wish }: SingleWishViewProps) {
 
           <div className="flex items-center gap-2">
             {wish.relationship && (
-              <span className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full border border-hairline bg-paper text-muted">
+              <span className="text-[11px] font-mono lowercase tracking-wider px-2.5 py-1 rounded-full border border-hairline bg-paper text-muted">
                 {wish.relationship}
               </span>
             )}

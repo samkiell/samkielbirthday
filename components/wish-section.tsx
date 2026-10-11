@@ -74,11 +74,11 @@ export function WishSection() {
     setSubmitting(true);
     try {
       const finalRelationship =
-        relationship === "other"
+        relationship.toLowerCase() === "other"
           ? customRelationship.trim()
             ? customRelationship.trim().toLowerCase()
             : "other"
-          : relationship;
+          : relationship.toLowerCase();
 
       const res = await fetch("/api/wishes", {
         method: "POST",
@@ -212,7 +212,7 @@ export function WishSection() {
           <div className="space-y-1.5">
             <label
               htmlFor="wish-name"
-              className="block text-xs font-mono uppercase tracking-wider text-muted"
+              className="block text-xs font-mono lowercase tracking-wider text-muted"
             >
               your name <span className="text-accent">*</span>
             </label>
@@ -228,45 +228,36 @@ export function WishSection() {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <label
-              className="block text-xs font-mono uppercase tracking-wider text-muted"
+              htmlFor="wish-relationship"
+              className="block text-xs font-mono lowercase tracking-wider text-muted"
             >
               who are you to me? <span className="text-muted/70 text-[10px]">(optional)</span>
             </label>
-
-            <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-              {RELATIONSHIP_OPTIONS.map((opt) => {
-                const isSelected = relationship.toLowerCase() === opt.toLowerCase();
-                return (
-                  <button
-                    key={opt}
-                    type="button"
-                    onClick={() => {
-                      if (isSelected) {
-                        setRelationship("");
-                        setCustomRelationship("");
-                      } else {
-                        setRelationship(opt);
-                        if (opt !== "other") {
-                          setCustomRelationship("");
-                        }
-                      }
-                    }}
-                    className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                      isSelected
-                        ? "bg-accent text-paper font-semibold shadow-2xs"
-                        : "border border-hairline bg-paper/60 text-muted hover:text-ink hover:border-accent/40 hover:bg-black/5 dark:hover:bg-white/5"
-                    }`}
-                  >
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
+            <select
+              id="wish-relationship"
+              value={relationship}
+              onChange={(e) => {
+                setRelationship(e.target.value);
+                if (e.target.value.toLowerCase() !== "other") {
+                  setCustomRelationship("");
+                }
+              }}
+              className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm lowercase focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
+            >
+              <option value="" className="lowercase">
+                select how you know me
+              </option>
+              {RELATIONSHIP_OPTIONS.map((opt) => (
+                <option key={opt} value={opt} className="lowercase">
+                  {opt}
+                </option>
+              ))}
+            </select>
 
             {relationship.toLowerCase() === "other" && (
-              <div className="pt-2 animate-in fade-in slide-in-from-top-1 duration-200 space-y-1">
+              <div className="pt-2 animate-in fade-in slide-in-from-top-1 duration-200">
                 <input
                   type="text"
                   maxLength={40}
@@ -274,12 +265,9 @@ export function WishSection() {
                   placeholder="specify your relationship (e.g. mentor, church, sibling)..."
                   value={customRelationship}
                   onChange={(e) => setCustomRelationship(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-lg border border-accent bg-paper text-ink text-xs font-mono placeholder:text-muted/60 focus:ring-1 focus:ring-accent outline-none transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-hairline bg-paper text-ink text-sm lowercase placeholder:lowercase placeholder:text-muted/60 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
                   aria-label="specify other relationship"
                 />
-                <p className="text-[10px] font-mono text-muted">
-                  manually type how you know samkiel above
-                </p>
               </div>
             )}
           </div>
@@ -289,7 +277,7 @@ export function WishSection() {
           <div className="flex justify-between items-center">
             <label
               htmlFor="wish-message"
-              className="block text-xs font-mono uppercase tracking-wider text-muted"
+              className="block text-xs font-mono lowercase tracking-wider text-muted"
             >
               write something nice <span className="text-accent">*</span>
             </label>
@@ -366,25 +354,25 @@ export function WishSection() {
             {wishes.slice(0, 4).map((w) => (
               <article
                 key={w.id}
-                className="p-5 rounded-lg border border-hairline bg-paper/70 flex flex-col justify-between gap-4 transition-all hover:border-accent/40"
+                className="p-4 sm:p-5 rounded-lg border border-hairline bg-paper/70 flex flex-col justify-between gap-4 transition-all hover:border-accent/40"
               >
-                <p className="text-ink text-sm leading-relaxed whitespace-pre-wrap">
+                <p className="text-ink text-sm leading-relaxed whitespace-pre-wrap break-words">
                   {w.message}
                 </p>
 
-                <div className="pt-3 border-t border-hairline/60 flex items-center justify-between text-xs text-muted font-mono">
-                  <div className="flex items-center gap-2">
-                    <span className="text-ink font-sans font-medium">
+                <div className="pt-3 border-t border-hairline/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs text-muted font-mono">
+                  <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                    <span className="text-ink font-sans font-medium truncate">
                       {w.name}
                     </span>
                     {w.relationship && (
-                      <span className="text-[10px] uppercase px-1.5 py-0.5 rounded border border-hairline bg-paper">
+                      <span className="text-[10px] lowercase px-1.5 py-0.5 rounded border border-hairline bg-paper shrink-0">
                         {w.relationship}
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3">
-                    <time dateTime={w.createdAt} suppressHydrationWarning>
+                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                    <time dateTime={w.createdAt} suppressHydrationWarning className="whitespace-nowrap text-[11px] text-muted">
                       {formatWishDateTime(w.createdAt, { short: true })}
                     </time>
                     <div className="flex items-center gap-1 border-l border-hairline/60 pl-2">
